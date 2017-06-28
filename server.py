@@ -2,8 +2,9 @@
 
 from flask import Flask,request
 from flaskext.mysql import MySQL
-from flask import flash,make_response,session
+from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
+import sys
 #import connexionDAO
 
 app = Flask('Dynamique')
@@ -19,7 +20,10 @@ mysql.init_app(app)
 
 @app.route('/',methods=['GET', 'POST'])
 def Accueil() :
-	return render_template('Accueil.html')
+	var=session.get('pseudo')
+	if var==None:
+		return render_template('Accueil.html',pseudo="")
+	return render_template('Accueil.html',pseudo=session['pseudo'])
 
 @app.route('/connexion', methods=['GET','POST'])
 def Connexion():
@@ -28,8 +32,7 @@ def Connexion():
 		mdp=request.form['mdp']
 		#if connexionDAO.check(mail,mdp):
 		session['pseudo'] =mail
-		session['logged_in']=True
-		return redirect(url_for('Accueil'))
+		return render_template('Accueil.html',pseudo=mail)
 	else:
 		flash('Mauvais mot de passe')
 	return render_template('connexion.html')
@@ -42,7 +45,21 @@ def Inscriptions():
 		mail=request.form['mail']
 		mdp=request.form['mdp']
 		confirmer_mdp=request.form['confirmer_mdp']
+		if mdp == confirmer_mdp:
+			print('true',file=sys.stderr)
+			return redirect('/connexion')
 
-	return render_template('inscription.html',pseudo=pseudo,mail=mail,mdp=mdp,confirmer_mdp=confirmer_mdp)
+		else:
+			flash("Veuillez saisir un mot de passe identique")
+			return render_template('inscription.html')
+	else:
+		return render_template('inscription.html')
+
+
+@app.route('/deconnexion')
+def Logout():
+	session.pop('pseudo', None)
+	flash('Deconnexion reussie')
+	return render_template('Accueil.html')
 
 app.run(debug=True)

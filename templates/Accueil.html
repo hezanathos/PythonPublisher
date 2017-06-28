@@ -17,10 +17,9 @@
                 <li><a href="http://localhost:5000/pages">Pages créées</a></li>
                 <li><a href="http://localhost:5000/connexion">Connexion</a></li>
                 <li><a href="http://localhost:5000/inscription">Inscription</a></li>
-                {% if session.logged_in %}
-                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{mail}}</a></li>
-                {% else %}
-                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{mail}}</a></li>
+                {% if pseudo %}
+                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{pseudo}}</a></li>
+                    <li><a href="{{url_for('Logout')}}">Deconnexion</a></li>
                 {% endif %}
             </ul>
         </div>
