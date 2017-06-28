@@ -13,12 +13,12 @@ app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # la session dure une heure
 def Accueil() :
 	return render_template('Accueil.html')
 
-@app.route('/connexion', methods=['POST'])
+@app.route('/connexion', methods=['GET', 'POST'])
 def Connexion():
-	if request.method == 'POST':
-		Nom=request.form['msg']
-		session['pseudo'] =Nom
-		return render_template('connexion.html',Nom=Nom)
-	return render_template('pages.html') #Liste des pages créées
+	#if request.method == 'POST':
+		#Nom=request.form['msg']
+		#session['pseudo'] =Nom
+	return render_template('connexion.html')
+	#return render_template('pages.html') #Liste des pages créées
 
 app.run(debug=True)
