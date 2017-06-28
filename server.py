@@ -21,21 +21,22 @@ mysql.init_app(app)
 def Accueil() :
 	return render_template('Accueil.html')
 
-@app.route('/connexion', methods=['GET', 'POST'])
+@app.route('/connexion', methods=['GET','POST'])
 def Connexion():
 	if request.method == 'POST':
 		mail=request.form['mail']
-		if connexionDAO.check(mail,mdp):
-			session['pseudo'] =mail
-			return redirect("http://localhost:5000/")
-		else:
-	return render_template('connexion.html')		
+		mdp=request.form['mdp']
+		#if connexionDAO.check(mail,mdp):
+		session['pseudo'] =mail
+		session['logged_in']=True
+		return redirect(url_for('Accueil'))
+	else:
+		flash('Mauvais mot de passe')
+	return render_template('connexion.html')
 	
 
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
-
-
 	return render_template('inscription.html')
 
 app.run(debug=True)
