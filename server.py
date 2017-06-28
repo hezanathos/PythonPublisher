@@ -1,4 +1,3 @@
-#! /usr/bin/python
 # -*- coding:utf-8 -*-
 
 from flask import Flask,request
@@ -15,10 +14,10 @@ def Accueil() :
 
 @app.route('/connexion', methods=['GET', 'POST'])
 def Connexion():
-	#if request.method == 'POST':
-		#Nom=request.form['msg']
-		#session['pseudo'] =Nom
-	return render_template('connexion.html')
-	#return render_template('pages.html') #Liste des pages créées
+	if request.method == 'POST':
+		mail=request.form['mail']
+		session['pseudo'] =mail
+		return render_template('connexion.html')
+	return render_template('Accueil.html',Nom=mail) #Liste des pages créées
 
 app.run(debug=True)

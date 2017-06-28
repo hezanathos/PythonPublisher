@@ -17,6 +17,10 @@
                 <li><a href="http://localhost:5000/pages">Pages créées</a></li>
                 <li><a href="http://localhost:5000/connexion">Connexion</a></li>
                 <li><a href="http://localhost:5000/inscription">Inscription</a></li>
+                {% if Nom %}
+                    <li><a href="http://localhost:5000/">Bienvenue : {{Nom}}</a></li>
+                {% else %}
+                    <li><a href="http://localhost:5000/connexion">Connectez-vous</a>
             </ul>
         </div>
     </nav>    
