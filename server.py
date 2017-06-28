@@ -63,4 +63,12 @@ def Logout():
 	flash('Deconnexion reussie')
 	return redirect('/')
 
+@app.route('/pages',methods=['GET','POST'])
+def Pages():
+	return render_template('pages.html')
+
+@app.route('/vide',methods=['GET','POST'])
+def Vide():
+	return render_template('vide.html')
+
 app.run(debug=True)
