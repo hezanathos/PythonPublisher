@@ -35,6 +35,15 @@
                         <div class="caption">
                             <h3>Entrez vos identifiants</h3>
                         </div>
+                      {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul>
+                            {% for m in messages %}
+                                <li>{{ m }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% endwith %}
                         <form action="" method="post" class="loginForm">
                             <div class="input-group">
                                 <input type="text" name='mail' class="form-control" placeholder="Adresse mail" required>
