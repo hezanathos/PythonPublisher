@@ -17,10 +17,11 @@
                 <li><a href="http://localhost:5000/pages">Pages créées</a></li>
                 <li><a href="http://localhost:5000/connexion">Connexion</a></li>
                 <li><a href="http://localhost:5000/inscription">Inscription</a></li>
-                {% if Nom %}
-                    <li><a href="http://localhost:5000/">Bienvenue : {{Nom}}</a></li>
+                {% if session.logged_in %}
+                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{mail}}</a></li>
                 {% else %}
-                    <li><a href="http://localhost:5000/connexion">Connectez-vous</a>
+                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{mail}}</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>    
