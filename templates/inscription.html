@@ -35,13 +35,12 @@
                         <div class="caption">
                             <h3>Veuillez saisir les informations ci-dessous pour vous inscrire</h3>
                         </div>
-                        <form action="" class="loginForm">
+                        <form action="" method="post" class="loginForm">
                             <div class="input-group">
-                                <input type="text" id="name" class="form-control" placeholder="Nom">
-                                <input type="text" id="name" class="form-control" placeholder="Prénom">
-                                <input type="text" id="name" class="form-control" placeholder="Mail">
-                                <input type="password" id="paw" class="form-control" placeholder="Mot de Passe">
-                                <input type="text" id="paw" class="form-control" placeholder="Confirmer Mot de Passe">
+                                <input type="text" id="name" class="form-control" placeholder="Pseudo" name="pseudo" required>
+                                <input type="text" id="name" class="form-control" placeholder="Mail" name="mail" required>
+                                <input type="password" id="paw" class="form-control" placeholder="Mot de Passe" name="mdp" required>
+                                <input type="text" id="paw" class="form-control" placeholder="Confirmer Mot de Passe" name="confirmer_mdp" required>
                                 <input type="submit" id="submit" class="form-control" value="Envoyer">
                             </div>
                         </form>
