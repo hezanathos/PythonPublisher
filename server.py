@@ -1,4 +1,3 @@
-#! /usr/bin/python
 # -*- coding:utf-8 -*-
 
 from flask import Flask,request
@@ -20,5 +19,11 @@ def Connexion():
 		#session['pseudo'] =Nom
 	return render_template('connexion.html')
 	#return render_template('pages.html') #Liste des pages créées
+
+@app.route('/inscription',methods=['GET','POST'])
+def Inscriptions():
+
+
+	return render_template('inscription.html')
 
 app.run(debug=True)
