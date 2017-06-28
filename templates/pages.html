@@ -9,13 +9,21 @@
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="http://localhost:5000/">Page WEB Python</a>
+                <a class="navbar-brand" href="{{url_for('Accueil')}}">Page WEB Python</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="http://localhost:5000/vide">Vide</a></li>
-                <li><a href="http://localhost:5000/pages">Pages créées</a></li>
-                <li><a href="http://localhost:5000/connexion">Connexion</a></li>
-                <li><a href="http://localhost:5000/inscription">Inscription</a></li>
+                {% if pseudo %}
+                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{pseudo}}</a></li>
+                    <li><a href="{{url_for('Vide')}}">Vide</a></li>
+                {% endif %}
+                <li><a href="{{url_for('Pages')}}">Pages créées</a></li>
+                {% if not pseudo %}
+                    <li><a href="{{url_for('Inscriptions')}}">Inscription</a></li>
+                    <li><a href="{{url_for('Connexion')}}">Connexion</a></li>
+                {% endif %}
+                {% if pseudo %}
+                    <li><a href="{{url_for('Logout')}}">Deconnexion</a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>    

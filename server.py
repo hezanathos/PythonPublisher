@@ -29,6 +29,7 @@ def Accueil() :
 
 @app.route('/connexion', methods=['GET','POST'])
 def Connexion():
+	var=session.get('pseudo')
 	if request.method == 'POST':
 		mail=request.form['mail']
 		mdp=request.form['mdp']
@@ -37,10 +38,11 @@ def Connexion():
 			return redirect('/')
 		else:
 			flash('Mauvais mot de passe')
-	return render_template('connexion.html')
+	return render_template('connexion.html',pseudo=var)
 	
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
+	var=session.get('pseudo')
 	if request.method == 'POST':
 		pseudo=request.form['pseudo']
 		mail=request.form['mail']
@@ -49,12 +51,11 @@ def Inscriptions():
 		if mdp == confirmer_mdp:
 			print('true',file=sys.stderr)
 			return redirect('/connexion')
-
 		else:
 			flash("Veuillez saisir un mot de passe identique")
-			return render_template('inscription.html')
+			return render_template('inscription.html',pseudo=var)
 	else:
-		return render_template('inscription.html')
+		return render_template('inscription.html',pseudo=var)
 
 
 @app.route('/deconnexion')
@@ -65,10 +66,12 @@ def Logout():
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
-	return render_template('pages.html')
+	var=session.get('pseudo')
+	return render_template('pages.html',pseudo=var)
 
 @app.route('/vide',methods=['GET','POST'])
 def Vide():
-	return render_template('vide.html')
+	var=session.get('pseudo')
+	return render_template('vide.html',pseudo=var)
 
 app.run(debug=True)
