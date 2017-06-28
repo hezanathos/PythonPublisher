@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask,request
+from flask import Flask,request,redirect,url_for
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session
 from flask import render_template
@@ -13,7 +13,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # la session dure une heure
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
-app.config['MYSQL_DATABASE_DB'] = 'testbase'
+app.config['MYSQL_DATABASE_DB'] = 'siteweb_python'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
