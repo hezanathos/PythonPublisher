@@ -32,4 +32,10 @@ def Connexion():
 	return render_template('connexion.html')		
 	
 
+@app.route('/inscription',methods=['GET','POST'])
+def Inscriptions():
+
+
+	return render_template('inscription.html')
+
 app.run(debug=True)
