@@ -1,11 +1,13 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask,request
+from flask import Flask,request,redirect,url_for
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
+
 import sys
-#import connexionDAO
+import connexionDAO
+
 
 app = Flask('Dynamique')
 mysql = MySQL()
@@ -14,7 +16,7 @@ app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # la session dure une heure
 
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
-app.config['MYSQL_DATABASE_DB'] = 'testbase'
+app.config['MYSQL_DATABASE_DB'] = 'siteweb_python'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
@@ -30,14 +32,13 @@ def Connexion():
 	if request.method == 'POST':
 		mail=request.form['mail']
 		mdp=request.form['mdp']
-		#if connexionDAO.check(mail,mdp):
-		session['pseudo'] =mail
-		return render_template('Accueil.html',pseudo=mail)
-	else:
-		flash('Mauvais mot de passe')
+		if connexionDAO.check(mail,mdp):
+			session['pseudo'] =mail
+			return redirect(url_for('Accueil'))
+		else:
+			flash('Mauvais mot de passe')
 	return render_template('connexion.html')
 	
-
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
 	if request.method == 'POST':
