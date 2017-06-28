@@ -37,6 +37,12 @@ def Connexion():
 
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
-	return render_template('inscription.html')
+	if request.method == 'POST':
+		pseudo=request.form['pseudo']
+		mail=request.form['mail']
+		mdp=request.form['mdp']
+		confirmer_mdp=request.form['confirmer_mdp']
+
+	return render_template('inscription.html',pseudo=pseudo,mail=mail,mdp=mdp,confirmer_mdp=confirmer_mdp)
 
 app.run(debug=True)
