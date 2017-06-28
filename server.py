@@ -4,6 +4,7 @@ from flask import Flask,request
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session
 from flask import render_template
+import DAO/connexionDAO
 
 app = Flask('Dynamique')
 mysql = MySQL()
@@ -24,8 +25,11 @@ def Accueil() :
 def Connexion():
 	if request.method == 'POST':
 		mail=request.form['mail']
-		session['pseudo'] =mail
-		return render_template('connexion.html')
-	return render_template('Accueil.html',Nom=mail) #Liste des pages créées
+		if connexionDAO.check(mail,mdp):
+			session['pseudo'] =mail
+			return redirect("http://localhost:5000/")
+		else:
+	return render_template('connexion.html')		
+	
 
 app.run(debug=True)
