@@ -34,7 +34,7 @@ def Connexion():
 		mdp=request.form['mdp']
 		if connexionDAO.check(mail,mdp):
 			session['pseudo'] =mail
-			return redirect(url_for('Accueil'))
+			return redirect('/')
 		else:
 			flash('Mauvais mot de passe')
 	return render_template('connexion.html')
@@ -61,6 +61,6 @@ def Inscriptions():
 def Logout():
 	session.pop('pseudo', None)
 	flash('Deconnexion reussie')
-	return render_template('Accueil.html')
+	return redirect('/')
 
 app.run(debug=True)
