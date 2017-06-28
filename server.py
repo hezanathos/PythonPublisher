@@ -4,7 +4,7 @@ from flask import Flask,request
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session
 from flask import render_template
-import DAO/connexionDAO
+#import connexionDAO
 
 app = Flask('Dynamique')
 mysql = MySQL()
