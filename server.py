@@ -4,7 +4,7 @@ from flask import Flask,request
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session
 from flask import render_template
-#import connexionDAO
+import connexionDAO
 
 app = Flask('Dynamique')
 mysql = MySQL()
@@ -27,10 +27,11 @@ def Connexion():
 		mail=request.form['mail']
 		if connexionDAO.check(mail,mdp):
 			session['pseudo'] =mail
-			return redirect("http://localhost:5000/")
-		else:
+			return redirect("/")
+			#TODO flash
 	return render_template('connexion.html')		
-	
+
+
 
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
