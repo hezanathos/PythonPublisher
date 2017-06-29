@@ -6,27 +6,7 @@
         <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
     </head>
     <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{{url_for('Accueil')}}">Page WEB Python</a>
-            </div>
-            <ul class="nav navbar-nav">
-                {% if pseudo %}
-                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{pseudo}}</a></li>
-                    <li><a href="{{url_for('Vide')}}">Vide</a></li>
-                {% endif %}
-                <li><a href="{{url_for('Pages')}}">Pages créées</a></li>
-                {% if not pseudo %}
-                    <li><a href="{{url_for('Inscriptions')}}">Inscription</a></li>
-                    <li><a href="{{url_for('Connexion')}}">Connexion</a></li>
-                {% endif %}
-                {% if pseudo %}
-                    <li><a href="{{url_for('Logout')}}">Deconnexion</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>    
+    {% include 'menu.html' %}
     <form class="form-horizontal" method="post">
     <fieldset>
     <!-- Form Name -->
@@ -62,8 +42,8 @@
     <div class="form-group">
         <label class="col-md-4 control-label" for="Votre article:">Quel est votre article :</label>
         <br>
-        <textarea class="align-center" rows="15" cols="80" name="article" placeholder="Entrez votre article"  required>
-        </textarea> 
+        <textarea class="align-center" rows="15" cols="80" name="article" placeholder="Entrez votre article"  required></textarea>
+
     </div>
     <div class="col-md-6 control-label">
         <input class="btn btn-success" type="submit" id="submit" value="Envoyer">

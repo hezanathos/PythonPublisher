@@ -8,28 +8,7 @@
         <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
     </head>
     <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="{{url_for('Accueil')}}">Python Publisher</a>
-            </div>
-            <ul class="nav navbar-nav">
-                {% if pseudo %}
-                    <li><a href="{{url_for('Accueil')}}">Bienvenue : {{pseudo}}</a></li>
-                    <li><a href="{{url_for('Vide')}}">Vide</a></li>
-                {% endif %}
-                <li><a href="{{url_for('Pages')}}">Pages créées</a></li>
-                <li><a href="{{url_for('Connexion')}}">Connexion</a></li>
-                {% if not pseudo %}
-                    <li><a href="{{url_for('Inscriptions')}}">Inscription</a></li>
-                {% endif %}
-                {% if pseudo %}
-                    <li><a href="{{url_for('Logout')}}">Deconnexion</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>    
-
+    {% include 'menu.html' %}   
     <div class="container-fluid">
         <h1 class="text-center">
             Bienvenue sur Pyhton Publisher : Réalisé par Maxime Lamyae et Yusuf
@@ -47,6 +26,11 @@
             {% endwith %}
         <div class="text-center">
             <img class="text-center" src="/static/python.png">
+            <br>
+            <br>
+            <br>
+            <br>
+            <img class="text-center" height="100" width="100" src="/static/orange.png">
         </div>
     </div>
     </body>

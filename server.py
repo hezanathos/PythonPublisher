@@ -25,7 +25,7 @@ def Accueil() :
 	var=session.get('pseudo')
 	if var==None:
 		return render_template('Accueil.html',pseudo="")
-	return render_template('Accueil.html',pseudo=session['pseudo'])
+	return render_template('Accueil.html',pseudo=var)
 
 @app.route('/connexion', methods=['GET','POST'])
 def Connexion():
@@ -51,6 +51,7 @@ def Inscriptions():
 		if mdp == confirmer_mdp:
 			print('true',file=sys.stderr)
 			return redirect('/connexion')
+
 		else:
 			flash("Veuillez saisir un mot de passe identique")
 			return render_template('inscription.html',pseudo=var)
