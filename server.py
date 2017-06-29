@@ -54,7 +54,7 @@ def Inscriptions():
 		'_pseudo' : request.form['pseudo'],
 		'_mail' : request.form['mail'],
 		'_mdp' : request.form['mdp'],
-		'confirmer_mdp' : request.form['confirmer_mdp']
+		'_confirmer_mdp' : request.form['confirmer_mdp']
 		}
 		if request.form['mdp'] == request.form['confirmer_mdp']:
 			print('True',file=sys.stderr)
@@ -91,6 +91,6 @@ def Vide():
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
 	page=pageDAO.get(username,pagenumber)
-	return render_template('page.html',page=page,title=page["titre"])
+	return render_template('page.html',page=page,titre=page["titre"])
 
 app.run(debug=True)
