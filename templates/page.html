@@ -1,19 +1,16 @@
-{# projetFlask/templates/Premiere.html: #}
-
-
 <!DOCTYPE html>
 <html lang="fr">
     {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}
     <div class="text-center">
-        <h{{taille}}>
-            {{titre}}
-        </h{{taille}}>
-        <img class="img-thumbnail" src="{{image}}">
+        <h{{page["taille"]}}>
+            {{page["titre"]}}
+        </h{{page["taille"]}}>
+        <!-- <img class="img-thumbnail" src="{{image}}"> -->
         <div class="col-lg-4 col-sm-offset-4">
             <div class="text-justify">
-                {{article}}
+                {{page["article"]}}
             </div>
         </div>
     </div>
