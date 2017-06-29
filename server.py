@@ -7,6 +7,7 @@ from flask import render_template
 
 import sys
 import connexionDAO
+import pageDAO
 
 
 app = Flask('Dynamique')
@@ -79,5 +80,10 @@ def Vide():
 	title="Formulaire"
 	var=session.get('pseudo')
 	return render_template('vide.html',pseudo=var,title=title)
+
+@app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
+def Creations(username,pagenumber):
+	page=pageDAO.get(username,pagenumber)
+	return render_template('page.html',page=page,title=page["titre"])
 
 app.run(debug=True)
