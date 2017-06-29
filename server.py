@@ -89,14 +89,12 @@ def Formulaire():
 		'_user_mail' : request.form['user_mail'],
 		}
 		if formDAO.formulaire(params):
-			session['pseudo'] =mail
-			flash('Formulaire complet')
-			#return ('OK')
+			session['pseudo'] =user_mail
+			#flash('Formulaire complet')
 			return redirect('/')
 		else:
 			flash('Formulaire non complet')
-			#return ('Form not complete')
-			return render_template('formulaire.html',pseudo=var,title=title)
+			return render_template('formulaire.html',pseudo=user_mail,title=title)
 	else:
 		return render_template('formulaire.html',pseudo=user_mail, title=title)
 
