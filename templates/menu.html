@@ -6,7 +6,7 @@
         <ul class="nav navbar-nav">
             {% if pseudo %}
                 <li><a href="">Bienvenue : {{pseudo}}</a></li>
-                <li><a href="{{url_for('Vide')}}">Vide</a></li>
+                <li><a href="{{url_for('Formulaire')}}">Formulaire</a></li>
             {% endif %}
             <li><a href="{{url_for('Pages')}}">Pages créées</a></li>
             {% if not pseudo %}

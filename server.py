@@ -8,7 +8,12 @@ from flask import render_template
 import sys
 import os
 import connexionDAO
+
+import formDAO
+
+import pageDAO
 from inscriptionDAO import *
+
 
 
 app = Flask('Dynamique')
@@ -53,7 +58,7 @@ def Inscriptions():
 		'_pseudo' : request.form['pseudo'],
 		'_mail' : request.form['mail'],
 		'_mdp' : request.form['mdp'],
-		'confirmer_mdp' : request.form['confirmer_mdp']
+		'_confirmer_mdp' : request.form['confirmer_mdp']
 		}
 		if request.form['mdp'] == request.form['confirmer_mdp']:
 			print('True',file=sys.stderr)
@@ -69,11 +74,34 @@ def Inscriptions():
 		return render_template('inscription.html',pseudo=var,title=title)
 
 
-@app.route('/deconnexion')
-def Logout():
-	session.pop('pseudo', None)
-	flash('Deconnexion reussie')
-	return redirect('/')
+
+@app.route('/formulaire',methods=['GET','POST'])
+def Formulaire():
+	user_mail=session.get('pseudo')
+	title= "Formulaire"
+	if request.method == 'POST':
+		params = {
+		'_article' : request.form['article'],
+		'_titre' : request.form['titre'],
+		'_chemin_image' : request.form['chemin_image'],
+		'_taille_titre' : request.form['taille_titre'],
+		'_numero_page' : request.form['numero_page'],
+		'_user_mail' : request.form['user_mail'],
+		}
+		if formDAO.formulaire(params):
+			session['pseudo'] =mail
+			flash('Formulaire complet')
+			#return ('OK')
+			return redirect('/')
+		else:
+			flash('Formulaire non complet')
+			#return ('Form not complete')
+			return render_template('formulaire.html',pseudo=var,title=title)
+	else:
+		return render_template('formulaire.html',pseudo=user_mail, title=title)
+
+
+
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
@@ -81,10 +109,22 @@ def Pages():
 	var=session.get('pseudo')
 	return render_template('pages.html',pseudo=var,title=title)
 
-@app.route('/vide',methods=['GET','POST'])
+"""@app.route('/Formulaire',methods=['GET','POST'])
 def Vide():
 	title="Formulaire"
 	var=session.get('pseudo')
-	return render_template('vide.html',pseudo=var,title=title)
+	return render_template('vide.html',pseudo=var,title=title)"""
+
+@app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
+def Creations(username,pagenumber):
+	page=pageDAO.get(username,pagenumber)
+	return render_template('page.html',page=page,titre=page["titre"])
+
+@app.route('/deconnexion')
+def Logout():
+	session.pop('pseudo', None)
+	flash('Deconnexion reussie')
+	return redirect('/')
+
 
 app.run(debug=True)
