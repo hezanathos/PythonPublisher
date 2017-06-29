@@ -6,7 +6,9 @@ from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
 
 import sys
+import os
 import connexionDAO
+from inscriptionDAO import *
 
 
 app = Flask('Dynamique')
@@ -42,14 +44,19 @@ def Connexion():
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
 	if request.method == 'POST':
-		pseudo=request.form['pseudo']
-		mail=request.form['mail']
-		mdp=request.form['mdp']
-		confirmer_mdp=request.form['confirmer_mdp']
-		if mdp == confirmer_mdp:
-			print('true',file=sys.stderr)
-			return redirect('/connexion')
-
+		params = {
+		'_pseudo' : request.form['pseudo'],
+		'_mail' : request.form['mail'],
+		'_mdp' : request.form['mdp'],
+		'confirmer_mdp' : request.form['confirmer_mdp']
+		}
+		if request.form['mdp'] == request.form['confirmer_mdp']:
+			print('True',file=sys.stderr)
+			if inscription(params):
+				return redirect('/connexion')
+			else:
+				flash("Cette adresse mail existe déjà")
+				return render_template('inscription.html')
 		else:
 			flash("Veuillez saisir un mot de passe identique")
 			return render_template('inscription.html')
