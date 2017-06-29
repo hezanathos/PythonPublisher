@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>Pages publiées</title>
-        <!--CSS-->
-        <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
-    </head>
+    {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}
     <form class="form-horizontal" method="post">
@@ -34,7 +30,7 @@
     </div>
     <!-- Text input-->
     <div class="form-group">
-        <label class="col-md-4 control-label" for="image">Image : </label>  
+        <label class="col-md-4 control-label" for="image">Image :</label>  
             <div class="col-md-2">
                 <input name="image" type="text" placeholder="Nom de l'image et extension" class="form-control input-md" required>
             </div>
