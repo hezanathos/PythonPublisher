@@ -2,11 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>Python Publisher</title>
-        <!--CSS-->
-        <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
-    </head>
+    {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}   
     <div class="container-fluid">
@@ -15,15 +11,19 @@
             <br>
             <br>
         </h1>
+        <div class="centrer">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
+            <div class="alert alert-success">
                 <ul>
                 {% for m in messages %}
                     <li>{{ m }}</li>
                 {% endfor %}
                 </ul>
+            </div>
             {% endif %}
             {% endwith %}
+        </div>            
         <div class="text-center">
             <img class="text-center" src="/static/python.png">
             <br>

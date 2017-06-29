@@ -22,13 +22,15 @@ mysql.init_app(app)
 
 @app.route('/',methods=['GET', 'POST'])
 def Accueil() :
+	title="Python Publisher"
 	var=session.get('pseudo')
 	if var==None:
-		return render_template('Accueil.html',pseudo="")
-	return render_template('Accueil.html',pseudo=var)
+		return render_template('Accueil.html',pseudo="",title=title)
+	return render_template('Accueil.html',pseudo=var,title=title)
 
 @app.route('/connexion', methods=['GET','POST'])
 def Connexion():
+	title="Connexion"
 	var=session.get('pseudo')
 	if request.method == 'POST':
 		mail=request.form['mail']
@@ -38,11 +40,12 @@ def Connexion():
 			return redirect('/')
 		else:
 			flash('Mauvais mot de passe')
-	return render_template('connexion.html',pseudo=var)
+	return render_template('connexion.html',pseudo=var,title=title)
 	
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
 	var=session.get('pseudo')
+	title="Inscription"
 	if request.method == 'POST':
 		pseudo=request.form['pseudo']
 		mail=request.form['mail']
@@ -54,9 +57,9 @@ def Inscriptions():
 
 		else:
 			flash("Veuillez saisir un mot de passe identique")
-			return render_template('inscription.html',pseudo=var)
+			return render_template('inscription.html',pseudo=var,title=title)
 	else:
-		return render_template('inscription.html',pseudo=var)
+		return render_template('inscription.html',pseudo=var,title=title)
 
 
 @app.route('/deconnexion')
@@ -67,12 +70,14 @@ def Logout():
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
+	title="Nos Publishers"
 	var=session.get('pseudo')
-	return render_template('pages.html',pseudo=var)
+	return render_template('pages.html',pseudo=var,title=title)
 
 @app.route('/vide',methods=['GET','POST'])
 def Vide():
+	title="Formulaire"
 	var=session.get('pseudo')
-	return render_template('vide.html',pseudo=var)
+	return render_template('vide.html',pseudo=var,title=title)
 
 app.run(debug=True)

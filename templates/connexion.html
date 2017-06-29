@@ -2,11 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>Connexion</title>
-        <!--CSS-->
-        <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
-    </head>
+    {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}
     <div class="container-fluid">
@@ -24,15 +20,17 @@
                         <div class="caption">
                             <h3>Entrez vos identifiants</h3>
                         </div>
-                      {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            <ul>
-                            {% for m in messages %}
-                                <li>{{ m }}</li>
-                            {% endfor %}
-                            </ul>
-                        {% endif %}
-                        {% endwith %}
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="flash">
+                                <ul>
+                                {% for m in messages %}
+                                    <li>{{ m }}</li>
+                                {% endfor %}
+                                </ul>
+                                </div>
+                            {% endif %}
+                            {% endwith %}
                         <form action="" method="post" class="loginForm">
                             <div class="input-group">
                                 <input type="text" name='mail' class="form-control" placeholder="Adresse mail" required>
