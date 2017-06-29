@@ -8,20 +8,7 @@
         <link rel="stylesheet" type="text/css" href="static/bootstrap.min.css">
     </head>
     <body>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="http://localhost:5000/accueil">Page WEB Python</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li><a href="http://localhost:5000/vide">Vide</a></li>
-                <li><a href="http://localhost:5000/pages">Pages créées</a></li>
-                <li><a href="http://localhost:5000/connexion">Connexion</a></li>
-                <li><a href="http://localhost:5000/inscription">Inscription</a></li>
-            </ul>
-        </div>
-    </nav>    
-
+    {% include 'menu.html' %}
     <div class="container-fluid">
         <h1 class="text-center">
             Bienvenue sur la page d'inscription.
@@ -50,7 +37,7 @@
                                 <input type="text" id="name" class="form-control" placeholder="Pseudo" name="pseudo" required>
                                 <input type="text" id="name" class="form-control" placeholder="Mail" name="mail" required>
                                 <input type="password" id="paw" class="form-control" placeholder="Mot de Passe" name="mdp" required>
-                                <input type="text" id="paw" class="form-control" placeholder="Confirmer Mot de Passe" name="confirmer_mdp" required>
+                                <input type="password" id="paw" class="form-control" placeholder="Confirmer Mot de Passe" name="confirmer_mdp" required>
                                 <input type="submit" id="submit" class="form-control" value="Envoyer">
                             </div>
                         </form>
@@ -63,10 +50,10 @@
                         <div id="pswd_info">
                             <h4>Le mot de passe doit contenir</h4>
                             <ul>
-                                <li id="letter" class="invalid">Au moins<strong>une lettre majuscule</strong></li>
-                                <li id="number" class="invalid">Au moins un nombre<strong>one number</strong></li>
-                                <li id="length" class="invalid">Doit contenir<strong>8 charactères</strong></li>
-                                <li id="space" class="invalid">Doit utliser<strong> use [~,!,@,#,$,%,^,&,*,-,=,.,;,']</strong></li>
+                                <li id="letter" class="invalid">Au moins <strong>une lettre majuscule</strong></li>
+                                <li id="number" class="invalid">Au moins <strong>un nombre</strong></li>
+                                <li id="length" class="invalid">Au moins <strong>8 charactères</strong></li>
+                                <li id="space" class="invalid">Les caractères spéciaux <strong> [~,!,@,#,$,%,^,&,*,-,=,.,;,']</strong></li>
                             </ul>
                         </div>
                     </div>
