@@ -7,6 +7,7 @@ from flask import render_template
 
 import sys
 import connexionDAO
+import formDAO
 
 
 app = Flask('Dynamique')
@@ -64,6 +65,28 @@ def Logout():
 	session.pop('pseudo', None)
 	flash('Deconnexion reussie')
 	return redirect('/')
+
+@app.route('/formulaire',methods=['GET','POST'])
+def Formulaire():
+	var=session.get('pseudo')
+	if request.method == 'POST':
+		titre=request.form['titre']
+		taille_titre=request.form['taille']
+		chemin_image=request.form['image']
+		article=request.form['article']
+		if formDAO.formulaire(titre, taille_titre, chemin_image, article):
+			session['pseudo'] =mail
+			flash('Formulaire complet')
+			return ('OK')
+			#return redirect('/')
+		else:
+			flash('Formulaire non complet')
+			return ('Form not complete')
+	else:
+		return render_template('vide.html',pseudo=var)
+
+
+
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
