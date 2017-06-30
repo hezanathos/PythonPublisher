@@ -99,9 +99,6 @@ def Formulaire():
 	else:
 		return render_template('vide.html',pseudo=var)
 
-
-
-
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
 	title="Nos Publishers"
