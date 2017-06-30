@@ -4,15 +4,13 @@ from flask import Flask,request,redirect,url_for
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
+from inscriptionDAO import *
 
 import sys
 import os
 import connexionDAO
-
 import formDAO
-
 import pageDAO
-from inscriptionDAO import *
 
 
 
@@ -61,7 +59,7 @@ def Inscriptions():
 		'_confirmer_mdp' : request.form['confirmer_mdp']
 		}
 		if request.form['mdp'] == request.form['confirmer_mdp']:
-			print('True',file=sys.stderr)
+			#print('True',file=sys.stderr)
 			if inscription(params):
 				return redirect('/connexion')
 			else:
@@ -89,7 +87,7 @@ def Formulaire():
 		'_user_mail' : request.form['user_mail'],
 		}
 		if formDAO.formulaire(params):
-			session['pseudo'] =mail
+			session['pseudo']=mail
 			flash('Formulaire complet')
 			#return ('OK')
 			return redirect('/')
@@ -99,8 +97,6 @@ def Formulaire():
 			return render_template('formulaire.html',pseudo=var,title=title)
 	else:
 		return render_template('formulaire.html',pseudo=user_mail, title=title)
-
-
 
 
 @app.route('/pages',methods=['GET','POST'])
