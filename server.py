@@ -28,15 +28,15 @@ mysql.init_app(app)
 @app.route('/',methods=['GET', 'POST'])
 def Accueil() :
 	title="Python Publisher"
-	var=session.get('pseudo')
-	if var==None:
+	user_mail=session.get('pseudo')
+	if user_mail==None:
 		return render_template('Accueil.html',pseudo="",title=title)
-	return render_template('Accueil.html',pseudo=var,title=title)
+	return render_template('Accueil.html',pseudo=user_mail,title=title)
 
 @app.route('/connexion', methods=['GET','POST'])
 def Connexion():
 	title="Connexion"
-	var=session.get('pseudo')
+	user_mail=session.get('pseudo')
 	if request.method == 'POST':
 		mail=request.form['mail']
 		mdp=request.form['mdp']
@@ -45,7 +45,7 @@ def Connexion():
 			return redirect('/')
 		else:
 			flash('Mauvais mot de passe')
-	return render_template('connexion.html',pseudo=var,title=title)
+	return render_template('connexion.html',pseudo=user_mail,title=title)
 	
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
@@ -59,12 +59,11 @@ def Inscriptions():
 		'_confirmer_mdp' : request.form['confirmer_mdp']
 		}
 		if request.form['mdp'] == request.form['confirmer_mdp']:
-			#print('True',file=sys.stderr)
 			if inscription(params):
 				return redirect('/connexion')
 			else:
 				flash("Cette adresse mail existe déjà")
-				return render_template('inscription.html')
+				return redirect('inscription.html')
 		else:
 			flash("Veuillez saisir un mot de passe identique")
 			return render_template('inscription.html',pseudo=user_name,title=title)
@@ -83,21 +82,25 @@ def Formulaire():
 		'_taille_titre' : request.form['taille_titre'],
 		'_chemin_image' : request.form['chemin_image'],
 		'_article' : request.form['article'],
-		'_user_mail' : user_mail,
+		'_user_mail' : user_mail
 		}
-		if formulaire(params):
-			flash('Formulaire complet')
+		result_requete = insertOrUpdate(params)
+		if result_requete is not None:
+			update(params)
+			flash('Formulaire mis à jour')
 			return redirect('/')
 		else:
-			return redirect('/formulaire')
+			insert(params)
+			flash('Formulaire complet')
+			return redirect('/')
 	else:
 		return render_template('formulaire.html',pseudo=user_mail, title=title)
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
 	title="Nos Publishers"
-	var=session.get('pseudo')
-	return render_template('pages.html',pseudo=var,title=title)
+	user_mail=session.get('pseudo')
+	return render_template('pages.html',pseudo=user_mail,title=title)
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
