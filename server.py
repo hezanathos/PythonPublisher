@@ -4,15 +4,13 @@ from flask import Flask,request,redirect,url_for
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
+from inscriptionDAO import *
 
 import sys
 import os
 import connexionDAO
-
 import formDAO
-
 import pageDAO
-from inscriptionDAO import *
 
 
 
@@ -61,7 +59,7 @@ def Inscriptions():
 		'_confirmer_mdp' : request.form['confirmer_mdp']
 		}
 		if request.form['mdp'] == request.form['confirmer_mdp']:
-			print('True',file=sys.stderr)
+			#print('True',file=sys.stderr)
 			if inscription(params):
 				return redirect('/connexion')
 			else:
@@ -74,30 +72,33 @@ def Inscriptions():
 		return render_template('inscription.html',pseudo=var,title=title)
 
 
-@app.route('/deconnexion')
-def Logout():
-	session.pop('pseudo', None)
-	flash('Deconnexion reussie')
-	return redirect('/')
 
 @app.route('/formulaire',methods=['GET','POST'])
 def Formulaire():
-	var=session.get('pseudo')
+	user_mail=session.get('pseudo')
+	title= "Formulaire"
 	if request.method == 'POST':
-		titre=request.form['titre']
-		taille_titre=request.form['taille']
-		chemin_image=request.form['image']
-		article=request.form['article']
-		if formDAO.formulaire(titre, taille_titre, chemin_image, article):
-			session['pseudo'] =mail
+		params = {
+		'_article' : request.form['article'],
+		'_titre' : request.form['titre'],
+		'_chemin_image' : request.form['chemin_image'],
+		'_taille_titre' : request.form['taille_titre'],
+		'_numero_page' : request.form['numero_page'],
+		'_user_mail' : request.form['user_mail'],
+		}
+		if formDAO.formulaire(params):
+			session['pseudo']=mail
 			flash('Formulaire complet')
-			return ('OK')
-			#return redirect('/')
+			#return ('OK')
+			session['pseudo'] =user_mail
+			#flash('Formulaire complet')
+			return redirect('/')
 		else:
 			flash('Formulaire non complet')
-			return ('Form not complete')
+			return render_template('formulaire.html',pseudo=user_mail,title=title)
 	else:
-		return render_template('vide.html',pseudo=var)
+		return render_template('formulaire.html',pseudo=user_mail, title=title)
+
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
@@ -105,15 +106,22 @@ def Pages():
 	var=session.get('pseudo')
 	return render_template('pages.html',pseudo=var,title=title)
 
-@app.route('/vide',methods=['GET','POST'])
+"""@app.route('/Formulaire',methods=['GET','POST'])
 def Vide():
 	title="Formulaire"
 	var=session.get('pseudo')
-	return render_template('vide.html',pseudo=var,title=title)
+	return render_template('vide.html',pseudo=var,title=title)"""
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
 	page=pageDAO.get(username,pagenumber)
 	return render_template('page.html',page=page,titre=page["titre"])
+
+@app.route('/deconnexion')
+def Logout():
+	session.pop('pseudo', None)
+	flash('Deconnexion reussie')
+	return redirect('/')
+
 
 app.run(debug=True)

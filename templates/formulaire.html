@@ -3,7 +3,7 @@
     {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}
-    <form class="form-horizontal" method="post">
+    <form action="{{url_for('Accueil')}}" class="form-horizontal" method="post">
     <fieldset>
     <!-- Form Name -->
     <legend>Formulaire de création de pages</legend>
@@ -30,7 +30,7 @@
     </div>
     <!-- Text input-->
     <div class="form-group">
-        <label class="col-md-4 control-label" for="image">Image : </label>  
+        <label class="col-md-4 control-label" for="image">Image :</label>  
             <div class="col-md-2">
                 <input name="image" type="text" placeholder="Nom de l'image et extension" class="form-control input-md" required>
             </div>
