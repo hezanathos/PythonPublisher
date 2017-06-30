@@ -17,11 +17,12 @@ def formulaire(params):
 	#data = {"titre":titre,"taille_titre":taille_titre, "chemin_image":chemin_image, "article":article, "var"}
 	conn = mysql.connect()
 	cursor = conn.cursor()
-	insertion="""INSERT INTO pages_web VALUES( %(_article)s, %(_titre)s, %(_chemin_image)s, %(_taille_titre)s, %(_numero_page)s, %(_user_mail)s )"""
+	insertion="""INSERT INTO `pages_web` VALUES( %(_article)s, %(_titre)s, %(_chemin_image)s, %(_taille_titre)s, %(_numero_page)s, %(_user_mail)s )"""
 	#(article, titre, chemin_image, taille_titre, numero_page, user_mail)
 	try:
 		cursor.execute(insertion,params)
 		conn.commit()
+		print(_article)
 
 	except IntegrityError as e:
 		return False
