@@ -5,11 +5,11 @@ from flaskext.mysql import MySQL
 from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
 from inscriptionDAO import *
+from formDAO import *
 
 import sys
 import os
 import connexionDAO
-import formDAO
 import pageDAO
 
 
@@ -49,7 +49,7 @@ def Connexion():
 	
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
-	var=session.get('pseudo')
+	user_name=session.get('pseudo')
 	title="Inscription"
 	if request.method == 'POST':
 		params = {
@@ -67,10 +67,9 @@ def Inscriptions():
 				return render_template('inscription.html')
 		else:
 			flash("Veuillez saisir un mot de passe identique")
-			return render_template('inscription.html',pseudo=var,title=title)
+			return render_template('inscription.html',pseudo=user_name,title=title)
 	else:
-		return render_template('inscription.html',pseudo=var,title=title)
-
+		return render_template('inscription.html',pseudo=user_name,title=title)
 
 
 @app.route('/formulaire',methods=['GET','POST'])
@@ -79,38 +78,26 @@ def Formulaire():
 	title= "Formulaire"
 	if request.method == 'POST':
 		params = {
-		'_article' : request.form['article'],
-		'_titre' : request.form['titre'],
-		'_chemin_image' : request.form['chemin_image'],
-		'_taille_titre' : request.form['taille_titre'],
 		'_numero_page' : request.form['numero_page'],
-		'_user_mail' : request.form['user_mail'],
+		'_titre' : request.form['titre'],
+		'_taille_titre' : request.form['taille_titre'],
+		'_chemin_image' : request.form['chemin_image'],
+		'_article' : request.form['article'],
+		'_user_mail' : user_mail,
 		}
-		if formDAO.formulaire(params):
-			session['pseudo']=mail
+		if formulaire(params):
 			flash('Formulaire complet')
-			#return ('OK')
-			session['pseudo'] =user_mail
-			#flash('Formulaire complet')
 			return redirect('/')
 		else:
-			flash('Formulaire non complet')
-			return render_template('formulaire.html',pseudo=user_mail,title=title)
+			return redirect('/formulaire')
 	else:
 		return render_template('formulaire.html',pseudo=user_mail, title=title)
-
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
 	title="Nos Publishers"
 	var=session.get('pseudo')
 	return render_template('pages.html',pseudo=var,title=title)
-
-"""@app.route('/Formulaire',methods=['GET','POST'])
-def Vide():
-	title="Formulaire"
-	var=session.get('pseudo')
-	return render_template('vide.html',pseudo=var,title=title)"""
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
