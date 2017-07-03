@@ -15,7 +15,7 @@ mysql.init_app(app)
 def liste_auteurs():
 	conn = mysql.connect()
 	cursor = conn.cursor()
-	cursor.execute("""SELECT `user_mail`,'titre','numero_page' FROM `pages_web`""")
+	cursor.execute("""SELECT `user_mail`,`titre`,`numero_page` FROM `pages_web`""")
 	data = cursor.fetchall()
 
 	liste_finale=[]
@@ -24,13 +24,14 @@ def liste_auteurs():
 		titre = row[1]
 		numero_page = row[2]
 		flag = False
-		listeTMP = []
+		listeTMP = [None,None,None,None]
 		for idx,sublist in enumerate(liste_finale):
-			if username in sublist:
+			if user_mail in sublist:
 				sublist[int(numero_page)] = titre
 				liste_finale[idx] = sublist
 				flag = True
-		if  not flag:		
+
+		if not flag:		
 			listeTMP[0] = user_mail
 			listeTMP[int(numero_page)] = titre
 			liste_finale.append(listeTMP)

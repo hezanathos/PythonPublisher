@@ -116,7 +116,11 @@ def Logout():
 	flash('Deconnexion reussie')
 	return redirect('/')
 
+@app.route('/liste')
+def Liste():
+	liste = [["maxime.rasse@orange.com","Titre2",None],["alex.lecoq@orange.com","Titre1",None,"Titre3"],["yusuf.makanjuola@orange.com",None,None,None]]
 
+	return render_template('Accueil.html',liste=liste)
 
 
 app.run(debug=True)
