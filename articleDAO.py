@@ -30,6 +30,7 @@ def liste_auteurs():
 				sublist[int(numero_page)] = titre
 				liste_finale[idx] = sublist
 				flag = True
+
 		if not flag:		
 			listeTMP[0] = user_mail
 			listeTMP[int(numero_page)] = titre
