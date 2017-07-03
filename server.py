@@ -11,6 +11,11 @@ from pageDAO import *
 import sys
 import os
 import connexionDAO
+<<<<<<< HEAD
+=======
+import pageDAO
+import articleDAO
+>>>>>>> 39731b05cd35e76f97392cf1e81dfe8997e76b46
 
 
 
@@ -30,8 +35,8 @@ def Accueil() :
 	title="Python Publisher"
 	user_mail=session.get('pseudo')
 	if user_mail==None:
-		return render_template('Accueil.html',pseudo="",title=title)
-	return render_template('Accueil.html',pseudo=user_mail,title=title)
+		return render_template('Accueil.html',pseudo="",title=title,liste=articleDAO.liste_auteurs())
+	return render_template('Accueil.html',pseudo=user_mail,title=title,liste=articleDAO.liste_auteurs())
 
 @app.route('/connexion', methods=['GET','POST'])
 def Connexion():
@@ -45,7 +50,7 @@ def Connexion():
 			return redirect('/')
 		else:
 			flash('Mauvais mot de passe')
-	return render_template('connexion.html',pseudo=user_mail,title=title)
+	return render_template('connexion.html',pseudo=user_mail,title=title,liste=articleDAO.liste_auteurs())
 	
 @app.route('/inscription',methods=['GET','POST'])
 def Inscriptions():
@@ -66,9 +71,9 @@ def Inscriptions():
 				return redirect('inscription.html')
 		else:
 			flash("Veuillez saisir un mot de passe identique")
-			return render_template('inscription.html',pseudo=user_name,title=title)
+			return render_template('inscription.html',pseudo=user_name,title=title,liste=articleDAO.liste_auteurs())
 	else:
-		return render_template('inscription.html',pseudo=user_name,title=title)
+		return render_template('inscription.html',pseudo=user_name,title=title,liste=articleDAO.liste_auteurs())
 
 
 @app.route('/formulaire',methods=['GET','POST'])
@@ -84,8 +89,15 @@ def Formulaire():
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
+<<<<<<< HEAD
 		select_num_page = insertOrUpdate(params)
 		if select_num_page is not None:
+=======
+
+
+		result_requete = insertOrUpdate(params)
+		if result_requete is not None:
+>>>>>>> 39731b05cd35e76f97392cf1e81dfe8997e76b46
 			update(params)
 			flash('Formulaire mis à jour')
 			return redirect('/')
@@ -94,24 +106,35 @@ def Formulaire():
 			flash('Formulaire complet')
 			return redirect('/')
 	else:
-		return render_template('formulaire.html',pseudo=user_mail, title=title)
+		return render_template('formulaire.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():
 	title="Nos Publishers"
 	user_mail=session.get('pseudo')
-	return render_template('pages.html',pseudo=user_mail,title=title)
+	return render_template('pages.html',pseudo=user_mail,title=title,liste=articleDAO.liste_auteurs())
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
+<<<<<<< HEAD
 	page=get(username,pagenumber)
 	return render_template('page.html',page=page,titre=page["titre"])
+=======
+	page=pageDAO.get(username,pagenumber)
+	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs())
+>>>>>>> 39731b05cd35e76f97392cf1e81dfe8997e76b46
 
 @app.route('/deconnexion')
 def Logout():
 	session.pop('pseudo', None)
 	flash('Deconnexion reussie')
 	return redirect('/')
+
+@app.route('/liste')
+def Liste():
+	liste = [["maxime.rasse@orange.com","Titre2",None],["alex.lecoq@orange.com","Titre1",None,"Titre3"],["yusuf.makanjuola@orange.com",None,None,None]]
+
+	return render_template('Accueil.html',liste=liste)
 
 
 app.run(debug=True)
