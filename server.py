@@ -6,11 +6,11 @@ from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
 from inscriptionDAO import *
 from formDAO import *
+from pageDAO import *
 
 import sys
 import os
 import connexionDAO
-import pageDAO
 
 
 
@@ -84,8 +84,8 @@ def Formulaire():
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
-		result_requete = insertOrUpdate(params)
-		if result_requete is not None:
+		select_num_page = insertOrUpdate(params)
+		if select_num_page is not None:
 			update(params)
 			flash('Formulaire mis à jour')
 			return redirect('/')
@@ -104,7 +104,7 @@ def Pages():
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
-	page=pageDAO.get(username,pagenumber)
+	page=get(username,pagenumber)
 	return render_template('page.html',page=page,titre=page["titre"])
 
 @app.route('/deconnexion')
