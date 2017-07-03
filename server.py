@@ -4,10 +4,10 @@ from flask import Flask,request,redirect,url_for
 from flaskext.mysql import MySQL
 from flask import flash,make_response,session,redirect,url_for
 from flask import render_template
-from inscriptionDAO import *
-from formDAO import *
-from pageDAO import *
 
+import inscriptionDAO 
+import formDAO 
+import pageDAO
 import sys
 import os
 import connexionDAO
@@ -61,7 +61,7 @@ def Inscriptions():
 		'_confirmer_mdp' : request.form['confirmer_mdp']
 		}
 		if request.form['mdp'] == request.form['confirmer_mdp']:
-			if inscription(params):
+			if inscriptionDAO.inscription(params):
 				return redirect('/connexion')
 			else:
 				flash("Cette adresse mail existe déjà")
@@ -87,17 +87,13 @@ def Formulaire():
 		'_user_mail' : user_mail
 		}
 
-		select_num_page = insertOrUpdate(params)
+		select_num_page = formDAO.insertOrUpdate(params)
 		if select_num_page is not None:
-
-
-		result_requete = insertOrUpdate(params)
-		if result_requete is not None:
-			update(params)
+			formDAO.update(params)
 			flash('Formulaire mis à jour')
 			return redirect('/')
 		else:
-			insert(params)
+			formDAO.insert(params)
 			flash('Formulaire complet')
 			return redirect('/')
 	else:
@@ -111,9 +107,6 @@ def Pages():
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
-	page=get(username,pagenumber)
-	return render_template('page.html',page=page,titre=page["titre"])
-
 	page=pageDAO.get(username,pagenumber)
 	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs())
 
