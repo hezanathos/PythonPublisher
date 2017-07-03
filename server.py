@@ -11,6 +11,7 @@ import sys
 import os
 import connexionDAO
 import pageDAO
+import artcileDAO
 
 
 
@@ -30,7 +31,7 @@ def Accueil() :
 	title="Python Publisher"
 	user_mail=session.get('pseudo')
 	if user_mail==None:
-		return render_template('Accueil.html',pseudo="",title=title)
+		return render_template('Accueil.html',pseudo="",title=title,liste=articleDAO.liste_auteurs())
 	return render_template('Accueil.html',pseudo=user_mail,title=title)
 
 @app.route('/connexion', methods=['GET','POST'])
@@ -114,6 +115,8 @@ def Logout():
 	session.pop('pseudo', None)
 	flash('Deconnexion reussie')
 	return redirect('/')
+
+
 
 
 app.run(debug=True)
