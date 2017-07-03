@@ -4,18 +4,29 @@
             <a class="navbar-brand" href="{{url_for('Accueil')}}">Python Publisher</a>
         </div>
         <ul class="nav navbar-nav">
-            {% if pseudo %}
-                <li><a href="">Bienvenue : {{pseudo}}</a></li>
-                <li><a href="{{url_for('Formulaire')}}">Formulaire</a></li>
-            {% endif %}
-            <li><a href="{{url_for('Pages')}}">Pages créées</a></li>
-            {% if not pseudo %}
-                <li><a href="{{url_for('Inscriptions')}}">Inscription</a></li>
-                <li><a href="{{url_for('Connexion')}}">Connexion</a></li>
-            {% endif %}
-            {% if pseudo %}
-                <li><a href="{{url_for('Logout')}}">Deconnexion</a></li>
-            {% endif %}
+            {% for sousListes in liste %}
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{sousListes[0]}}<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                {% for titre in sousListes[1:] %}
+                    {% if titre %}
+                        <li><a href="{{loop.index}}">{{titre}}</a></li>
+                    {% endif %}
+                {% endfor %}
+                 </ul>
+            </li>
+            {% endfor %}
+                {% if pseudo %}
+            <li><a class="active" href="">Bienvenue : {{pseudo}}</a></li>
+            <li><a href="{{url_for('Formulaire')}}">Formulaire</a></li>
+                {% endif %}
+            <li class="dropdown"><a href="{{url_for('Pages')}}">Pages créées</a></li>
+                {% if not pseudo %}
+            <li><a href="{{url_for('Inscriptions')}}">Inscription</a></li>
+            <li><a href="{{url_for('Connexion')}}">Connexion</a></li>
+                {% endif %}
+                {% if pseudo %}
+            <li><a href="{{url_for('Logout')}}">Deconnexion</a></li>
+                {% endif %}
         </ul>
     </div>
 </nav>    
