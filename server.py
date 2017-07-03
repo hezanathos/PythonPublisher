@@ -32,7 +32,7 @@ def Accueil() :
 	user_mail=session.get('pseudo')
 	if user_mail==None:
 		return render_template('Accueil.html',pseudo="",title=title,liste=articleDAO.liste_auteurs())
-	return render_template('Accueil.html',pseudo=user_mail,title=title)
+	return render_template('Accueil.html',pseudo=user_mail,title=title,liste=articleDAO.liste_auteurs())
 
 @app.route('/connexion', methods=['GET','POST'])
 def Connexion():
