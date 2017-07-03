@@ -3,21 +3,10 @@
     {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}
-    <form action="" class="form-horizontal" method="post">
+    <form class="form-horizontal" method="post">
     <fieldset>
     <!-- Form Name -->
     <legend>Formulaire de création de pages</legend>
-    <!-- Select Basic -->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="numero_page">Numéro de Page : </label>
-      <div class="col-md-4">
-        <select name="numero_page" class="form-control" required>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-      </div>
-    </div>
     <!-- Text input-->
     <div class="form-group">
         <label class="col-md-4 control-label" for="titre">Titre : </label>  
@@ -29,7 +18,7 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="taille">Taille : </label>
       <div class="col-md-4">
-        <select name="taille_titre" class="form-control" required>
+        <select name="taille" class="form-control" required>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -39,12 +28,11 @@
         </select>
       </div>
     </div>
-
     <!-- Text input-->
     <div class="form-group">
-        <label class="col-md-4 control-label" for="image">Image :</label>  
+        <label class="col-md-4 control-label" for="image">Image : </label>  
             <div class="col-md-2">
-                <input name="chemin_image" type="text" placeholder="Nom de l'image et extension" class="form-control input-md" required>
+                <input name="image" type="text" placeholder="Nom de l'image et extension" class="form-control input-md" required>
             </div>
     </div>
     <div class="form-group">

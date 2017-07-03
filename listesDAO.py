@@ -2,7 +2,6 @@
 from flask import Flask,request,flash
 from flaskext.mysql import MySQL
 import sys
-from pymysql.err import IntegrityError
 
 mysql = MySQL()
 
@@ -13,18 +12,25 @@ app.config['MYSQL_DATABASE_DB'] = 'siteweb_python'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
-def inscription(params):
+def liste_auteurs(params):
 	conn = mysql.connect()
 	cursor = conn.cursor()
-	query = """INSERT INTO `inscription`(username,mdp,mail) VALUES(%(_pseudo)s,%(_mdp)s,%(_mail)s)"""
-	try:
-		cursor.execute(query,params)
-		conn.commit()
 
-	except IntegrityError as e:
-		conn.rollback()
-		return False
+
+	query = """SELECT `user_mail` and 'titre' FROM `pages_web` WHERE user_mail = %(_user_mail)s and titre=%(_titre)s"""
+	liste=[]
+	liste.append('user_mail')
+	liste_two=[]
+	for user_mail in liste
+		liste_two.append(user_mail,titre)
+
+	
+
+
+	cursor.execute(query,params)
+	conn.commit()
+	val_query=cursor.fetchone()
 
 	cursor.close()
-
-	return True
+		
+	return (val_query)
