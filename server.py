@@ -86,11 +86,12 @@ def Formulaire():
 		'_chemin_image' : request.form['chemin_image'],
 		'_taille_titre' : request.form['taille_titre'],
 		'_numero_page' : request.form['numero_page'],
-		'_user_mail' : request.form['user_mail'],
+		'_user_mail' : user_mail
+		#'_user_mail' : request.form['user_mail'],
 		}
 		if formDAO.formulaire(params):
 			session['pseudo'] =user_mail
-			#flash('Formulaire complet')
+			flash('Formulaire complet')
 			return redirect('/')
 		else:
 			flash('Formulaire non complet')
