@@ -5,11 +5,11 @@
         </div>
         <ul class="nav navbar-nav">
             <li class="dropdown"> 
-                <a class="dropdown-toggle" data-toggle="dropdown">Pages<span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" >Pages<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     {% for sousListes in liste %}
                         <li class="dropdown-submenu">
-                            <a class="dropdown-toggle" data-toggle="dropdown">{{sousListes[0]}} <span class="caret"></span></a>
+                            <a tabindex="-1" class="test" href="#">{{sousListes[0]}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">                                
                                 {% for titre in sousListes[1:] %}
                                     {% if titre %}
