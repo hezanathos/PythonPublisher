@@ -115,7 +115,8 @@ def Pages():
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
 	page=pageDAO.get(username,pagenumber)
-	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs())
+	chemin_image="/static/"+page["chemin_image"]
+	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs(),chemin_image=chemin_image)
 
 
 @app.route('/deconnexion')
@@ -123,12 +124,6 @@ def Logout():
 	session.pop('pseudo', None)
 	flash('Deconnexion reussie')
 	return redirect('/')
-
-@app.route('/liste')
-def Liste():
-	liste = [["maxime.rasse@orange.com","Titre2",None],["alex.lecoq@orange.com","Titre1",None,"Titre3"],["yusuf.makanjuola@orange.com",None,None,None]]
-
-	return render_template('Accueil.html',liste=liste)
 
 
 app.run(debug=True)
