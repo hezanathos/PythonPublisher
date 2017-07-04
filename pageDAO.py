@@ -21,7 +21,7 @@ def get(username,pagenumber):
 	page = {}
 	page["article"]="Pas d article"
 	page["titre"]="Pas de titre"
-	page["chemin"]=""
+	page["chemin_image"]=""
 	page["taille"]="1"
 
 	if data is None:
@@ -30,6 +30,6 @@ def get(username,pagenumber):
 		for row in data:
 			page["article"]=row[0]
 			page["titre"]=row[1]
-			page["chemin"]=row[2]
+			page["chemin_image"]=row[2]
 			page["taille"]=row[3]
 	return (page)
