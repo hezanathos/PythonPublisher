@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask, request,redirect, url_for
+from flask import Flask, request, redirect, url_for
 from flaskext.mysql import MySQL
 from flask import flash, make_response, session, redirect, url_for
 from flask import render_template
@@ -13,14 +13,12 @@ import inscriptionDAO
 import formDAO
 import pageDAO
 import compteDAO
-
-
+import pprint
 
 app = Flask('Dynamique')
 mysql = MySQL()
 app.secret_key = 'cle'
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # la session dure une heure
-
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'siteweb_python'
@@ -77,7 +75,11 @@ def Inscriptions():
 def Formulaire():
 	user_mail = session.get('pseudo')
 	title = "Formulaire"
-	if request.method == 'POST':
+	pp = pprint.PrettyPrinter()
+	pp.pprint(request.method == 'POST' and 'numero_page2' in request.form.keys())
+	data={'numero_page':0}
+
+	if request.method == 'POST' and 'titre' in request.form.keys():
 		params = {
 		'_numero_page' : request.form['numero_page'],
 		'_titre' : request.form['titre'],
@@ -94,7 +96,14 @@ def Formulaire():
 		else:
 			formDAO.insert(params)
 			flash('Formulaire complet')
-			return redirect('/')
+			return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
+
+	elif request.method == 'POST' and 'numero_page2' in request.form.keys():
+		pp = pprint.PrettyPrinter(indent=4)
+		pp.pprint(request.form['numero_page2'])
+		data['numero_page']=request.form['numero_page2']
+		return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs(),data=data)
+		
 	else:
 		return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
@@ -104,10 +113,19 @@ def Pages():
 	user_mail = session.get('pseudo')
 	return render_template('pages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
+<<<<<<< HEAD
 @app.route('/pages/<username>/<pagenumber>',methods = ['GET', 'POST'])
 def Creations(username, pagenumber):
 	page = pageDAO.get(username, pagenumber)
 	return render_template('page.html', page = page, titre = page["titre"], liste = articleDAO.liste_auteurs())
+=======
+@app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
+def Creations(username,pagenumber):
+	page=pageDAO.get(username,pagenumber)
+	chemin_image="/static/"+page["chemin_image"]
+	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs(),chemin_image=chemin_image)
+
+>>>>>>> 9d8b07858152ea9a849f0b1963b6828700a13e8f
 
 @app.route('/deconnexion')
 def Logout():
@@ -115,6 +133,7 @@ def Logout():
 	flash('Deconnexion reussie')
 	return redirect('/')
 
+<<<<<<< HEAD
 @app.route('/compte', methods = ['GET', 'POST'])
 def Compte():
 	title = "Mon Compte"
@@ -139,3 +158,7 @@ def Compte():
 		return render_template('compte.html', pseudo = mail, title = title, liste = articleDAO.liste_auteurs())
 
 app.run(debug = True)
+=======
+
+app.run(debug=True)
+>>>>>>> 9d8b07858152ea9a849f0b1963b6828700a13e8f

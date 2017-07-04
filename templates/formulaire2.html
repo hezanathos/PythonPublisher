@@ -5,19 +5,6 @@
     {% include 'menu.html' %}
     <form action="" class="form-horizontal" method="post">
     <fieldset>
-    <!-- Form Name -->
-    <legend>Formulaire de création de pages</legend>
-    <!-- Select Basic -->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="numero_page">Numéro de Page : </label>
-      <div class="col-md-4">
-        <select name="numero_page" class="form-control" required>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-      </div>
-    </div>
     <!-- Text input-->
     <div class="form-group">
         <label class="col-md-4 control-label" for="titre">Titre : </label>  
@@ -39,6 +26,12 @@
         </select>
       </div>
     </div>
+        <input type="hidden" name="numero_page" class="form-control" value="{{data.numero_page}}" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+    <!-- Text input-->
 
     <div class="form-group">
       <label class="col-md-4 control-label" for="image">Image : </label>
@@ -46,8 +39,7 @@
         <input class="btn btn-primary" type="file" name="chemin_image" class="form-control input-md" required>
       </div>
     </div>
-  
-    </div>
+    
     <div class="form-group">
         <label class="col-md-4 control-label" for="Votre article:">Quel est votre article :</label>
         <br>
