@@ -1,21 +1,17 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask,request,redirect,url_for
+from flask import Flask,request,redirect,url_for,flash,make_response,session,render_template
 from flaskext.mysql import MySQL
-from flask import flash,make_response,session,redirect,url_for
-from flask import render_template
-from inscriptionDAO import *
-from formDAO import *
-from pageDAO import *
 
-import sys
-import os
-import connexionDAO
-<<<<<<< HEAD
-=======
+import inscriptionDAO
+import connexionDAO 
+import formDAO 
 import pageDAO
 import articleDAO
->>>>>>> 39731b05cd35e76f97392cf1e81dfe8997e76b46
+import sys
+import os
+
+
 
 
 
@@ -64,7 +60,7 @@ def Inscriptions():
 		'_confirmer_mdp' : request.form['confirmer_mdp']
 		}
 		if request.form['mdp'] == request.form['confirmer_mdp']:
-			if inscription(params):
+			if inscriptionDAO.inscription(params):
 				return redirect('/connexion')
 			else:
 				flash("Cette adresse mail existe déjà")
@@ -89,20 +85,14 @@ def Formulaire():
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
-<<<<<<< HEAD
-		select_num_page = insertOrUpdate(params)
+
+		select_num_page = formDAO.insertOrUpdate(params)
 		if select_num_page is not None:
-=======
-
-
-		result_requete = insertOrUpdate(params)
-		if result_requete is not None:
->>>>>>> 39731b05cd35e76f97392cf1e81dfe8997e76b46
-			update(params)
+			formDAO.update(params)
 			flash('Formulaire mis à jour')
 			return redirect('/')
 		else:
-			insert(params)
+			formDAO.insert(params)
 			flash('Formulaire complet')
 			return redirect('/')
 	else:
@@ -116,25 +106,16 @@ def Pages():
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
-<<<<<<< HEAD
-	page=get(username,pagenumber)
-	return render_template('page.html',page=page,titre=page["titre"])
-=======
 	page=pageDAO.get(username,pagenumber)
-	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs())
->>>>>>> 39731b05cd35e76f97392cf1e81dfe8997e76b46
+	chemin_image="/static/"+page["chemin_image"]
+	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs(),chemin_image=chemin_image)
+
 
 @app.route('/deconnexion')
 def Logout():
 	session.pop('pseudo', None)
 	flash('Deconnexion reussie')
 	return redirect('/')
-
-@app.route('/liste')
-def Liste():
-	liste = [["maxime.rasse@orange.com","Titre2",None],["alex.lecoq@orange.com","Titre1",None,"Titre3"],["yusuf.makanjuola@orange.com",None,None,None]]
-
-	return render_template('Accueil.html',liste=liste)
 
 
 app.run(debug=True)
