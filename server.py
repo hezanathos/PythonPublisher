@@ -1,18 +1,17 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask,request,redirect,url_for
+from flask import Flask,request,redirect,url_for,flash,make_response,session,render_template
 from flaskext.mysql import MySQL
-from flask import flash,make_response,session,redirect,url_for
-from flask import render_template
 
-import inscriptionDAO 
+import inscriptionDAO
+import connexionDAO 
 import formDAO 
 import pageDAO
+import articleDAO
 import sys
 import os
-import connexionDAO
-import pageDAO
-import articleDAO
+
+
 
 
 

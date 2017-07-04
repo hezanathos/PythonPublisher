@@ -2,8 +2,6 @@
 from flask import Flask,request,flash
 from flaskext.mysql import MySQL
 import sys
-from pymysql.err import IntegrityError
-from pprint import pprint
 	
 mysql = MySQL()
 
