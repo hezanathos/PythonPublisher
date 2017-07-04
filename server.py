@@ -10,16 +10,12 @@ import pageDAO
 import articleDAO
 import sys
 import os
-
-
-
-
+import pprint
 
 app = Flask('Dynamique')
 mysql = MySQL()
 app.secret_key = 'cle'
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # la session dure une heure
-
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
 app.config['MYSQL_DATABASE_DB'] = 'siteweb_python'
@@ -74,9 +70,14 @@ def Inscriptions():
 
 @app.route('/formulaire',methods=['GET','POST'])
 def Formulaire():
+	pp = pprint.PrettyPrinter()
+	pp.pprint(request.method == 'POST' and 'numero_page2' in request.form.keys())
+
+	request.method
 	user_mail=session.get('pseudo')
 	title= "Formulaire"
-	if request.method == 'POST':
+	data={'numero_page':0}
+	if request.method == 'POST' and 'titre' in request.form.keys():
 		params = {
 		'_numero_page' : request.form['numero_page'],
 		'_titre' : request.form['titre'],
@@ -85,18 +86,25 @@ def Formulaire():
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
-
 		select_num_page = formDAO.insertOrUpdate(params)
 		if select_num_page is not None:
 			formDAO.update(params)
-			flash('Formulaire mis à jour')
-			return redirect('/')
+			return redirect('/pages/<user_mail>/<numero_page>')
 		else:
 			formDAO.insert(params)
 			flash('Formulaire complet')
-			return redirect('/')
+			return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
+	elif request.method == 'POST' and 'numero_page2' in request.form.keys():
+		pp = pprint.PrettyPrinter(indent=4)
+		pp.pprint(request.form['numero_page2'])
+		data['numero_page']=request.form['numero_page2']
+		return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs(),data=data)
 	else:
-		return render_template('formulaire.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
+		return render_template('formulaire1.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
+		
+
+
+
 
 @app.route('/pages',methods=['GET','POST'])
 def Pages():

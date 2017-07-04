@@ -15,12 +15,14 @@ mysql.init_app(app)
 def insert(params):
 	conn = mysql.connect()
 	cursor = conn.cursor()
+
 	insertion="""INSERT INTO `pages_web`(article,titre,chemin_image,taille_titre,numero_page,user_mail)VALUES(%(_article)s,%(_titre)s,%(_chemin_image)s,%(_taille_titre)s,%(_numero_page)s,%(_user_mail)s)"""
-	
+
 	cursor.execute(insertion,params)
 	conn.commit()
 
 	cursor.close()
+
 	
 
 def insertOrUpdate(params):
@@ -49,3 +51,19 @@ def update(params):
 
 	cursor.close()
 	
+
+def checkPage(params):
+	conn = mysql.connect()
+	cursor = conn.cursor()
+
+	query = """SELECT 'article',`titre`,'chemin_image','taille_titre',`numero_page`,`user_mail` FROM `pages_web`"""
+	
+	cursor.execute(query,params)
+	conn.commit()
+	val_query=cursor.fetchone()
+
+	cursor.close()
+		
+	return (val_query)
+
+
