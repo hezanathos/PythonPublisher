@@ -113,19 +113,18 @@ def Pages():
 	user_mail = session.get('pseudo')
 	return render_template('pages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
-<<<<<<< HEAD
+
 @app.route('/pages/<username>/<pagenumber>',methods = ['GET', 'POST'])
 def Creations(username, pagenumber):
 	page = pageDAO.get(username, pagenumber)
 	return render_template('page.html', page = page, titre = page["titre"], liste = articleDAO.liste_auteurs())
-=======
-@app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
-def Creations(username,pagenumber):
-	page=pageDAO.get(username,pagenumber)
-	chemin_image="/static/"+page["chemin_image"]
-	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs(),chemin_image=chemin_image)
 
->>>>>>> 9d8b07858152ea9a849f0b1963b6828700a13e8f
+# @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
+# def Creations(username,pagenumber):
+# 	page=pageDAO.get(username,pagenumber)
+# 	chemin_image="/static/"+page["chemin_image"]
+# 	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs(),chemin_image=chemin_image)
+
 
 @app.route('/deconnexion')
 def Logout():
@@ -133,7 +132,6 @@ def Logout():
 	flash('Deconnexion reussie')
 	return redirect('/')
 
-<<<<<<< HEAD
 @app.route('/compte', methods = ['GET', 'POST'])
 def Compte():
 	title = "Mon Compte"
@@ -158,7 +156,3 @@ def Compte():
 		return render_template('compte.html', pseudo = mail, title = title, liste = articleDAO.liste_auteurs())
 
 app.run(debug = True)
-=======
-
-app.run(debug=True)
->>>>>>> 9d8b07858152ea9a849f0b1963b6828700a13e8f
