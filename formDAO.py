@@ -25,7 +25,7 @@ def insert(params):
 
 	
 
-def insertOrUpdate(params):
+def isPageExist(params):
 	conn = mysql.connect()
 	cursor = conn.cursor()
 

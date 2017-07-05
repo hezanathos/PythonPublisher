@@ -1,15 +1,18 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask,request,redirect,url_for,flash,make_response,session,render_template
+from flask import Flask, request, redirect, url_for
 from flaskext.mysql import MySQL
+from flask import flash, make_response, session, redirect, url_for
+from flask import render_template
 
-import inscriptionDAO
-import connexionDAO 
-import formDAO 
-import pageDAO
-import articleDAO
 import sys
 import os
+import connexionDAO
+import articleDAO
+import inscriptionDAO
+import formDAO
+import pageDAO
+import compteDAO
 import pprint
 
 app = Flask('Dynamique')
@@ -23,31 +26,31 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 @app.route('/',methods=['GET', 'POST'])
-def Accueil() :
-	title="Python Publisher"
-	user_mail=session.get('pseudo')
-	if user_mail==None:
-		return render_template('Accueil.html',pseudo="",title=title,liste=articleDAO.liste_auteurs())
-	return render_template('Accueil.html',pseudo=user_mail,title=title,liste=articleDAO.liste_auteurs())
+def Accueil():
+	title = "Python Publisher"
+	user_mail = session.get('pseudo')
+	if user_mail == None:
+		return render_template('Accueil.html', pseudo = "", title = title, liste = articleDAO.liste_auteurs())
+	return render_template('Accueil.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
-@app.route('/connexion', methods=['GET','POST'])
+@app.route('/connexion', methods = ['GET', 'POST'])
 def Connexion():
 	title="Connexion"
-	user_mail=session.get('pseudo')
+	user_mail = session.get('pseudo')
 	if request.method == 'POST':
-		mail=request.form['mail']
-		mdp=request.form['mdp']
-		if connexionDAO.check(mail,mdp):
-			session['pseudo'] =mail
+		mail = request.form['mail']
+		mdp = request.form['mdp']
+		if connexionDAO.check(mail, mdp):
+			session['pseudo'] = mail
 			return redirect('/')
 		else:
 			flash('Mauvais mot de passe')
-	return render_template('connexion.html',pseudo=user_mail,title=title,liste=articleDAO.liste_auteurs())
+	return render_template('connexion.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 	
-@app.route('/inscription',methods=['GET','POST'])
+@app.route('/inscription', methods = ['GET', 'POST'])
 def Inscriptions():
-	user_name=session.get('pseudo')
-	title="Inscription"
+	user_name = session.get('pseudo')
+	title = "Inscription"
 	if request.method == 'POST':
 		params = {
 		'_pseudo' : request.form['pseudo'],
@@ -60,19 +63,21 @@ def Inscriptions():
 				return redirect('/connexion')
 			else:
 				flash("Cette adresse mail existe déjà")
-				return redirect('inscription.html')
+				return redirect('/inscription')
 		else:
 			flash("Veuillez saisir un mot de passe identique")
-			return render_template('inscription.html',pseudo=user_name,title=title,liste=articleDAO.liste_auteurs())
+			return render_template('inscription.html', pseudo = user_name, title = title, liste = articleDAO.liste_auteurs())
 	else:
-		return render_template('inscription.html',pseudo=user_name,title=title,liste=articleDAO.liste_auteurs())
+		return render_template('inscription.html', pseudo = user_name, title = title, liste = articleDAO.liste_auteurs())
 
 
-@app.route('/formulaire',methods=['GET','POST'])
+@app.route('/formulaire', methods = ['GET', 'POST'])
 def Formulaire():
 	user_mail=session.get('pseudo')
 	title= "Formulaire"
+
 	data={'numero_page':0}
+
 	if request.method == 'POST' and 'titre' in request.form.keys():
 		params = {
 		'_numero_page' : request.form['numero_page'],
@@ -82,10 +87,11 @@ def Formulaire():
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
-		select_num_page = formDAO.insertOrUpdate(params)
+		select_num_page = formDAO.isPageExist(params)
 		if select_num_page is not None:
 			formDAO.update(params)
-			return redirect('/pages/<user_mail>/<numero_page>')
+			flash('Formulaire mis à jour')
+			return redirect('/')
 		else:
 			formDAO.insert(params)
 			flash('Formulaire complet')
@@ -96,18 +102,16 @@ def Formulaire():
 		return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs(),data=data)
 		
 	else:
-		return render_template('formulaire1.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
-		
+		return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
-
-
-
-@app.route('/pages',methods=['GET','POST'])
+@app.route('/pages', methods = ['GET', 'POST'])
 def Pages():
-	title="Nos Publishers"
-	user_mail=session.get('pseudo')
-	return render_template('pages.html',pseudo=user_mail,title=title,liste=articleDAO.liste_auteurs())
+	title = "Nos Publishers"
+	user_mail = session.get('pseudo')
+	return render_template('pages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
+
+ 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
 	pseudo=session.get('pseudo')
@@ -122,5 +126,27 @@ def Logout():
 	flash('Deconnexion reussie')
 	return redirect('/')
 
+@app.route('/compte', methods = ['GET', 'POST'])
+def Compte():
+	title = "Mon Compte"
+	mail = session.get('pseudo')
+	if request.method == 'POST':
+		params = {
+		'_mdp' : request.form['mdp'],
+		'_confirmer_mdp' : request.form['confirmer_mdp'],
+		'_mail' : mail
+		}
+		if request.form['mdp'] == request.form['confirmer_mdp']:
+			if compteDAO.update_compte(params):
+				flash('Mot de passe changé')
+				return redirect('/')
+			else:
+				flash('Mot de passe invalide')
+				return redirect('/compte')
+		else:
+			flash("Veuillez saisir un mot de passe identique")
+			return redirect('/compte')
+	else:
+		return render_template('compte.html', pseudo = mail, title = title, liste = articleDAO.liste_auteurs())
 
-app.run(debug=True)
+app.run(debug = True)
