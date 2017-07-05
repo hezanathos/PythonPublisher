@@ -1,17 +1,50 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
     {% include 'header.html' %}
+    <style>
+        #frame {
+            width: 800px;
+            height: 600px;
+            border: 4px solid black;
+            -moz-transform: scale(0.8);
+            -moz-transform-origin: 0 1;
+            -o-transform-origin: 0 0;
+        }
+    </style>
+
     <body>
     {% include 'menu.html' %}
-    <div class="container-fluid">
-        <h1 class="text-center">
-            Voici la liste de nos Publishers
-            <br>
-            <br>
-            
-            </div>
+        <div class="container-fluid">
+            <h1 class="text-center">
+                Voici la liste de vos pages:
+                <br>
+                <table>
+                    <th>
+                        <iframe id="frame" src="pages/{{pseudo}}/1" href="pages/{{pseudo}}/1" name="myFrame"></iframe>                
+                    </th>
+                    <th>
+                        <a href="pages/{{pseudo}}/1">Votre première page : </a>                
+                    </th>
+                </table>
+                <table>
+                    <th>
+                        <iframe id="frame" src="pages/{{pseudo}}/2"></iframe>
+                    </th>
+                    <th>
+                        <a href="pages/{{pseudo}}/2">Votre seconde page : </a>
+                    </th>
+                </table>
+                <table>
+                    <th>
+                        <iframe id="frame" src="pages/{{pseudo}}/3"></iframe>
+                    </th>
+                    <th>
+                        <a href="pages/{{pseudo}}/3">Votre troisième page : </a>
+                    </th>
+                </table>
         </div>
-    </div>
     </body>
 		    {% include 'bottom.html' %}
 </html>
