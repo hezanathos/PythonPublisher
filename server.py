@@ -70,10 +70,6 @@ def Inscriptions():
 
 @app.route('/formulaire',methods=['GET','POST'])
 def Formulaire():
-	pp = pprint.PrettyPrinter()
-	pp.pprint(request.method == 'POST' and 'numero_page2' in request.form.keys())
-
-	request.method
 	user_mail=session.get('pseudo')
 	title= "Formulaire"
 	data={'numero_page':0}
@@ -96,8 +92,6 @@ def Formulaire():
 			return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
 
 	elif request.method == 'POST' and 'numero_page2' in request.form.keys():
-		pp = pprint.PrettyPrinter(indent=4)
-		pp.pprint(request.form['numero_page2'])
 		data['numero_page']=request.form['numero_page2']
 		return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs(),data=data)
 		
@@ -116,9 +110,10 @@ def Pages():
 
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):
+	pseudo=session.get('pseudo')
 	page=pageDAO.get(username,pagenumber)
 	chemin_image="/static/"+page["chemin_image"]
-	return render_template('page.html',page=page,titre=page["titre"],liste=articleDAO.liste_auteurs(),chemin_image=chemin_image)
+	return render_template('page.html', page=page, titre=page["titre"], pseudo = pseudo, liste=articleDAO.liste_auteurs(), chemin_image=chemin_image)
 
 
 @app.route('/deconnexion')
