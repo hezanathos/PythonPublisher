@@ -26,5 +26,4 @@ def inscription(params):
 		return False
 
 	cursor.close()
-
 	return True

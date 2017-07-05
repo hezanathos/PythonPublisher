@@ -17,9 +17,9 @@ def get(username,pagenumber):
 	cursor.execute("SELECT * from pages_web where user_mail='" + username + "' and numero_page='" + pagenumber + "'")
 	data = cursor.fetchall()
 	page = {}
-	page["article"]="Pas d article"
-	page["titre"]="Pas de titre"
-	page["chemin_image"]=""
+	page["article"]="Veuillez créer votre article"
+	page["titre"]="Veuillez ajouter une image"
+	page["chemin_image"]="aucune.jpg"
 	page["taille"]="1"
 
 	if data is None:
