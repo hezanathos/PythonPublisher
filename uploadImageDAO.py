@@ -1,9 +1,11 @@
 # -*- coding:utf-8 -*-
 
 from flask import Flask, request, flash, redirect, url_for,render_template
-from flask import send_file
-from werkzeug import secure_filename
+from flask import send_file, session
 import os
+import sys
+
+
 
 def createDirectory():
 	DOSSIER_UPS = '/Applications/PythonPublisher/static/'+session.get('pseudo')+"/"
@@ -11,4 +13,4 @@ def createDirectory():
 		return (DOSSIER_UPS)
 	else:
 		os.mkdir(DOSSIER_UPS)
-		return (DOSSIER_UPS)
+	return (DOSSIER_UPS)

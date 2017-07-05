@@ -154,7 +154,7 @@ def Formulaire():
 				nom = secure_filename(f.filename)
 				f.save(DOSSIER_UPS + nom)
 
-				select_num_page = formDAO.insertOrUpdate(params)
+				select_num_page = formDAO.isPageExist(params)
 				if select_num_page is not None:
 						formDAO.update(params)
 						flash('Formulaire mis à jour')
