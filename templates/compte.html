@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+    {% include 'header.html' %}
+    <body>
+    {% include 'menu.html' %}
+      <div class="container">
+      <form action="" class="form-horizontal" method="post">
+      <h2>
+        Bienvenue : {{pseudo}}
+        <img widht="200" height="200" src="/static/account.png">
+      </h2>        
+      <fieldset>
+          <!-- Form Name -->
+          <br>
+          <br>
+          <legend>Changement de mot de passe : </legend>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash">
+                <ul>
+                {% for m in messages %}
+                    <li>{{ m }}</li>
+                {% endfor %}
+                </ul>
+                </div>
+            {% endif %}
+          {% endwith %} 
+          <!-- Password input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="mdp">Nouveau mot de passe</label>
+            <div class="col-md-4">
+              <input name="mdp" type="password" placeholder="Entrez votre nouveau mot de passe" class="form-control input-md" required>
+            </div>
+          </div>
+          <!-- Password input-->
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="confirmer_mdp">Confirmer mot de passe</label>
+            <div class="col-md-4">
+              <input name="confirmer_mdp" type="password" placeholder="Entrez le mot de passe" class="form-control input-md" required>
+            </div>
+          </div>
+          <div class="col-md-6 control-label">
+            <input class="btn btn-success" type="submit" id="submit" value="Confirmer">
+          </div>
+        </fieldset>
+      </form>
+      </div>
+    </body>
+    {% include 'bottom.html' %}
+</html>

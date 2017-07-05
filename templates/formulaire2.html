@@ -3,21 +3,8 @@
     {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}
-    <form action="" class="form-horizontal" method="post" enctype="multipart/form-data">
+    <form action="" class="form-horizontal" method="post">
     <fieldset>
-    <!-- Form Name -->
-    <legend>Formulaire de création de pages</legend>
-    <!-- Select Basic -->
-    <div class="form-group">
-      <label class="col-md-4 control-label" for="numero_page">Numéro de Page : </label>
-      <div class="col-md-4">
-        <select name="numero_page" class="form-control" required>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-        </select>
-      </div>
-    </div>
     <!-- Text input-->
     <div class="form-group">
         <label class="col-md-4 control-label" for="titre">Titre : </label>  
@@ -40,14 +27,22 @@
       </div>
     </div>
 
-    <!-- Text input-->
     <div class="form-group">
-      <label class="col-md-4 control-label" for="chemin_image">Image : </label>
+      <input type="hidden" name="numero_page" class="form-control" value="{{data.numero_page}}" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </div>
+    
+    <!-- Text input-->
+
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="image">Image : </label>
       <div class="col-md-4">
-        <input class="btn btn-primary" type="file" name="chemin_image" id="chemin_image" class="form-control input-md" required>
+        <input class="btn btn-primary" type="file" name="chemin_image" class="form-control input-md" required>
       </div>
     </div>
-
+    
     <div class="form-group">
         <label class="col-md-4 control-label" for="Votre article:">Quel est votre article :</label>
         <br>
@@ -55,11 +50,10 @@
 
     </div>
     <div class="col-md-6 control-label">
-        <input class="btn btn-success" type="submit" id="btsub" value="Envoyer">
+        <input class="btn btn-success" type="submit" id="submit" value="Envoyer">
     </div>
     </fieldset>
     </form>
-    {{update}}
     </body>
 		    {% include 'bottom.html' %}
 </html>

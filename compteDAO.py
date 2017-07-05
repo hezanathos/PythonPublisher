@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from flask import Flask,request,flash
+from flask import Flask, request, flash
 from flaskext.mysql import MySQL
 import sys
 from pymysql.err import IntegrityError
@@ -13,17 +13,17 @@ app.config['MYSQL_DATABASE_DB'] = 'siteweb_python'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
-def inscription(params):
+def update_compte(params):
 	conn = mysql.connect()
 	cursor = conn.cursor()
-	query = """INSERT INTO `inscription`(username,mdp,mail) VALUES(%(_pseudo)s,%(_mdp)s,%(_mail)s)"""
-	try:
-		cursor.execute(query,params)
-		conn.commit()
 
-	except IntegrityError as e:
-		conn.rollback()
-		return False
+	insertion = """UPDATE `inscription` SET mdp = %(_mdp)s WHERE mail = %(_mail)s"""
+	#try:
+	cursor.execute(insertion,params)
+	conn.commit()
+	#except IntegrityError as e:
+		#conn.rollback()
+		#return False
 
 	cursor.close()
 	return True
