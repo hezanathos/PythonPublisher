@@ -91,7 +91,7 @@ def Formulaire():
 		if select_num_page is not None:
 			formDAO.update(params)
 			flash('Formulaire mis à jour')
-			return redirect('/')
+			return redirect('/pages/<username>/<pagenumber>')
 		else:
 			formDAO.insert(params)
 			flash('Formulaire complet')
@@ -102,7 +102,7 @@ def Formulaire():
 		return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs(),data=data)
 		
 	else:
-		return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+		return render_template('formulaire1.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
 @app.route('/pages', methods = ['GET', 'POST'])
 def Pages():
