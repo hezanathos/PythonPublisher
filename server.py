@@ -76,6 +76,7 @@ def Formulaire():
 	user_mail=session.get('pseudo')
 	title= "Formulaire"
 	data={'numero_page':0}
+
 	if request.method == 'POST' and 'titre' in request.form.keys():
 		params = {
 		'_numero_page' : request.form['numero_page'],
@@ -94,15 +95,11 @@ def Formulaire():
 			formDAO.insert(params)
 			flash('Formulaire complet')
 			return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
-	elif request.method == 'POST' and 'numero_page2' in request.form.keys():
-		data['numero_page']=request.form['numero_page2']
-		return render_template('formulaire2.html',pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
 	elif request.method == 'POST' and 'numero_page2' in request.form.keys():
-		pp = pprint.PrettyPrinter(indent=4)
-		pp.pprint(request.form['numero_page2'])
-		data['numero_page'] = request.form['numero_page2']
-		return render_template('formulaire2.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), data = data)
+		data['numero_page']=request.form['numero_page2']
+		return render_template('formulaire2.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(),data=data)
+
 	else:
 		return render_template('formulaire1.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 
