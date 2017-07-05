@@ -181,11 +181,10 @@ def Pages():
 # 	return render_template('page.html', page = page, titre = page["titre"], liste = articleDAO.liste_auteurs())
  
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
-def Creations(username,pagenumber):
-	pseudo=session.get('pseudo')
+def Creations(username,pagenumber):	
 	page=pageDAO.get(username,pagenumber)
-	chemin_image="/static/"+pseudo+"/"+page["chemin_image"]
-	return render_template('page.html', page=page, titre=page["titre"],pseudo=pseudo, liste=articleDAO.liste_auteurs(), chemin_image=chemin_image)
+	chemin_image="/static/"+username+"/"+page["chemin_image"]
+	return render_template('page.html', page=page, titre=page["titre"], pseudo=session.get('pseudo'), liste=articleDAO.liste_auteurs(), chemin_image=chemin_image)
 
 
 @app.route('/deconnexion')
