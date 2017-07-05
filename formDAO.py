@@ -45,7 +45,4 @@ def update(params):
 	
 	cursor.execute(update,params)
 	conn.commit()
-
-
-	cursor.close()
-	
+	cursor.close()	
