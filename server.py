@@ -11,6 +11,7 @@ import connexionDAO
 import articleDAO
 import inscriptionDAO
 import formDAO
+import prerempliFormDAO
 import pageDAO
 import compteDAO
 import pprint
@@ -88,7 +89,8 @@ def Formulaire():
 		}
 		select_num_page = formDAO.isPageExist(params)
 		if select_num_page is not None:
-			formDAO.update(params)
+			chargement=prerempliFormDAO.get(params)
+			#formDAO.update(params)
 			flash('Formulaire mis à jour')
 			return redirect('/pages/<username>/<pagenumber>')
 		else:
