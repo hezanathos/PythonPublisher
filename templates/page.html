@@ -7,7 +7,7 @@
         <h{{page["taille"]}}>
             {{page["titre"]}}
         </h{{page["taille"]}}>
-        <div>          
+        <div>  
             <img class="img-thumbnail" height="100" width="400" src="{{chemin_image}}">
         </div>
         <div class="col-lg-4 col-sm-offset-4">
@@ -15,6 +15,11 @@
             <br>
             <br>
                 {{page["article"]}}
+                {% if pseudo %}
+                    <br>
+                    <br>
+                    <a href="/modifpage">Modifier votre page</a>
+                {% endif %}
             </div>
         </div>
     </div>
