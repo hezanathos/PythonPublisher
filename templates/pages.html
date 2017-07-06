@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="fr">
     {% include 'header.html' %}
@@ -11,6 +9,8 @@
             -moz-transform: scale(0.8);
             -moz-transform-origin: 0 1;
             -o-transform-origin: 0 0;
+            pointer-events: none;
+
         }
     </style>
 
@@ -22,7 +22,7 @@
                 <br>
                 <table>
                     <th>
-                        <iframe id="frame" src="pages/{{pseudo}}/1" href="pages/{{pseudo}}/1" name="myFrame"></iframe>                
+                        <iframe id="frame" scrolling="no" src="pages/{{pseudo}}/1" href="pages/{{pseudo}}/1" name="myFrame"></iframe>          
                     </th>
                     <th>
                         <a href="pages/{{pseudo}}/1">Votre première page </a>                
@@ -30,7 +30,7 @@
                 </table>
                 <table>
                     <th>
-                        <iframe id="frame" src="pages/{{pseudo}}/2"></iframe>
+                        <iframe id="frame" scrolling="no" src="pages/{{pseudo}}/2"></iframe>
                     </th>
                     <th>
                         <a href="pages/{{pseudo}}/2">Votre seconde page </a>
@@ -38,7 +38,7 @@
                 </table>
                 <table>
                     <th>
-                        <iframe id="frame" src="pages/{{pseudo}}/3"></iframe>
+                        <iframe id="frame" scrolling="no" src="pages/{{pseudo}}/3"></iframe>
                     </th>
                     <th>
                         <a href="pages/{{pseudo}}/3">Votre troisième page </a>

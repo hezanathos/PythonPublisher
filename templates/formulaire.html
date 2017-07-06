@@ -3,7 +3,7 @@
     {% include 'header.html' %}
     <body>
     {% include 'menu.html' %}
-    <form action="" class="form-horizontal" method="post">
+    <form action="" class="form-horizontal" method="post" enctype="multipart/form-data">
     <fieldset>
     <!-- Form Name -->
     <legend>Formulaire de création de pages</legend>
@@ -42,11 +42,12 @@
 
     <!-- Text input-->
     <div class="form-group">
-        <label class="col-md-4 control-label" for="image">Image :</label>  
-            <div class="col-md-2">
-                <input name="chemin_image" type="text" placeholder="Nom de l'image et extension" class="form-control input-md" required>
-            </div>
+      <label class="col-md-4 control-label" for="chemin_image">Image : </label>
+      <div class="col-md-4">
+        <input class="btn btn-primary" type="file" name="chemin_image" id="chemin_image" class="form-control input-md" required>
+      </div>
     </div>
+
     <div class="form-group">
         <label class="col-md-4 control-label" for="Votre article:">Quel est votre article :</label>
         <br>
@@ -54,10 +55,11 @@
 
     </div>
     <div class="col-md-6 control-label">
-        <input class="btn btn-success" type="submit" id="submit" value="Envoyer">
+        <input class="btn btn-success" type="submit" id="btsub" value="Envoyer">
     </div>
     </fieldset>
     </form>
+    {{update}}
     </body>
 		    {% include 'bottom.html' %}
 </html>

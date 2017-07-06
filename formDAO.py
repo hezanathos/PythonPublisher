@@ -20,7 +20,6 @@ def insert(params):
 
 	cursor.execute(insertion,params)
 	conn.commit()
-
 	cursor.close()
 
 	
@@ -34,7 +33,6 @@ def isPageExist(params):
 	cursor.execute(query,params)
 	conn.commit()
 	val_query=cursor.fetchone()
-
 	cursor.close()
 		
 	return (val_query)
@@ -47,8 +45,6 @@ def update(params):
 	
 	cursor.execute(update,params)
 	conn.commit()
-
-
 	cursor.close()
 	
 
@@ -65,5 +61,4 @@ def checkPage(params):
 	cursor.close()
 		
 	return (val_query)
-
 

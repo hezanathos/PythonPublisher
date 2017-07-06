@@ -2,19 +2,22 @@
 
 from flask import Flask, request, redirect, url_for
 from flaskext.mysql import MySQL
-from flask import flash, make_response, session, redirect, url_for
+from flask import flash, make_response, session, redirect, url_for, send_file
 from flask import render_template
+from werkzeug import secure_filename
 
 import sys
 import os
 import connexionDAO
 import articleDAO
 import inscriptionDAO
+import uploadImageDAO
 import formDAO
 import prerempliFormDAO
 import pageDAO
 import compteDAO
 import pprint
+
 
 app = Flask('Dynamique')
 mysql = MySQL()
@@ -71,39 +74,101 @@ def Inscriptions():
 	else:
 		return render_template('inscription.html', pseudo = user_name, title = title, liste = articleDAO.liste_auteurs())
 
+def extension_ok(nomfic):
+	""" Renvoie True si le fichier possède une extension d'image valide. """
+	return '.' in nomfic and nomfic.rsplit('.', 1)[1] in ('png', 'jpg', 'jpeg', 'gif', 'bmp')
 
-@app.route('/formulaire', methods = ['GET', 'POST'])
+# @app.route('/formulaire', methods = ['GET', 'POST'])
+# def Formulaire():
+# 	user_mail=session.get('pseudo')
+# 	title= "Formulaire"
+# <<<<<<< HEAD
+# 	if request.method == 'POST':
+# 		f = request.files['chemin_image']
+# =======
+# 	data={'numero_page':0}
+
+# 	if request.method == 'POST' and 'titre' in request.form.keys():
+# >>>>>>> 6df8467c51fc09e5bb24c558fee305fd1b4f6eab
+# 		params = {
+# 		'_numero_page' : request.form['numero_page'],
+# 		'_titre' : request.form['titre'],
+# 		'_taille_titre' : request.form['taille_titre'],
+# 		'_chemin_image' : secure_filename(f.filename),
+# 		'_article' : request.form['article'],
+# 		'_user_mail' : user_mail
+# 		}
+# <<<<<<< HEAD
+# 		DOSSIER_UPS=CreateDirectory()
+# 		if f: # on vérifie qu'un fichier a bien été envoyé
+# 			if extension_ok(f.filename): # on vérifie que son extension est valide
+# 				nom = secure_filename(f.filename)
+# 				f.save(DOSSIER_UPS + nom)
+
+# 				select_num_page = formDAO.insertOrUpdate(params)
+# 				if select_num_page is not None:
+# 						formDAO.update(params)
+# 						flash('Formulaire mis à jour')
+# 						return redirect('/')
+# 				else:
+# 					formDAO.insert(params)
+# 					flash('Formulaire complet')
+# 					return redirect('/')
+# 		else:
+# 			return render_template('formulaire.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
+# =======
+# 		select_num_page = formDAO.isPageExist(params)
+# 		if select_num_page is not None:
+# 			formDAO.update(params)
+# 			flash('Formulaire mis à jour')
+# 			return redirect('/pages/<username>/<pagenumber>')
+# 		else:
+# 			formDAO.insert(params)
+# 			flash('Formulaire complet')
+# 			return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
+
+# 	elif request.method == 'POST' and 'numero_page2' in request.form.keys():
+# 		data['numero_page']=request.form['numero_page2']
+# 		return render_template('formulaire2.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(),data=data)
+
+# >>>>>>> 6df8467c51fc09e5bb24c558fee305fd1b4f6eab
+# 	else:
+# 		return render_template('formulaire1.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+
+@app.route('/formulaire',methods=['GET','POST'])
 def Formulaire():
 	user_mail=session.get('pseudo')
 	title= "Formulaire"
-	data={'numero_page':0}
-
-	if request.method == 'POST' and 'titre' in request.form.keys():
+	if request.method == 'POST':
+		f = request.files['chemin_image']
 		params = {
 		'_numero_page' : request.form['numero_page'],
 		'_titre' : request.form['titre'],
 		'_taille_titre' : request.form['taille_titre'],
-		'_chemin_image' : request.form['chemin_image'],
+		'_chemin_image' : secure_filename(f.filename),
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
-		select_num_page = formDAO.isPageExist(params)
-		if select_num_page is not None:
-			chargement=prerempliFormDAO.get(params)
-			#formDAO.update(params)
-			flash('Formulaire mis à jour')
-			return redirect('/pages/<username>/<pagenumber>')
+
+		DOSSIER_UPS=uploadImageDAO.createDirectory()
+		if f: # on vérifie qu'un fichier a bien été envoyé
+			if extension_ok(f.filename): # on vérifie que son extension est valide
+				nom = secure_filename(f.filename)
+				f.save(DOSSIER_UPS + nom)
+
+				select_num_page = formDAO.isPageExist(params)
+				if select_num_page is not None:
+						formDAO.update(params)
+						flash('Formulaire mis à jour')
+						return redirect('/')
+				else:
+					formDAO.insert(params)
+					flash('Formulaire complet')
+					return redirect('/')
 		else:
-			formDAO.insert(params)
-			flash('Formulaire complet')
-			return render_template('formulaire2.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
-
-	elif request.method == 'POST' and 'numero_page2' in request.form.keys():
-		data['numero_page']=request.form['numero_page2']
-		return render_template('formulaire2.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(),data=data)
-
+			return render_template('formulaire.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
 	else:
-		return render_template('formulaire1.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+		return render_template('formulaire.html',pseudo=user_mail, title=title,liste=articleDAO.liste_auteurs())
 
 @app.route('/pages', methods = ['GET', 'POST'])
 def Pages():
@@ -118,11 +183,10 @@ def Pages():
 # 	return render_template('page.html', page = page, titre = page["titre"], liste = articleDAO.liste_auteurs())
  
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
-def Creations(username,pagenumber):
-	pseudo=session.get('pseudo')
+def Creations(username,pagenumber):	
 	page=pageDAO.get(username,pagenumber)
-	chemin_image="/static/"+page["chemin_image"]
-	return render_template('page.html', page=page, titre=page["titre"],pseudo=pseudo, liste=articleDAO.liste_auteurs(), chemin_image=chemin_image)
+	chemin_image="/static/"+username+"/"+page["chemin_image"]
+	return render_template('page.html', page=page, titre=page["titre"], pseudo=session.get('pseudo'), liste=articleDAO.liste_auteurs(), chemin_image=chemin_image)
 
 
 @app.route('/deconnexion')
