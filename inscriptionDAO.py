@@ -3,6 +3,7 @@ from flask import Flask,request,flash
 from flaskext.mysql import MySQL
 import sys
 from pymysql.err import IntegrityError
+import smtplib
 
 mysql = MySQL()
 
@@ -24,6 +25,9 @@ def inscription(params):
 	except IntegrityError as e:
 		conn.rollback()
 		return False
+
+	#sender = 'yusfu95@hotmail.fr'
+	#receivers = ['']
 
 	cursor.close()
 	return True

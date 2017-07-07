@@ -121,8 +121,8 @@ def Formulaire():
 		else:
 			return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
 
-@app.route('/modifpage',methods=['GET','POST'])
-def ModifPage():
+@app.route('/modifpage/<pagenumber>',methods=['GET','POST'])
+def ModifPage(pagenumber):
 	user_mail=session.get('pseudo')
 	title= "Modifier Page"
 	session['page_number'] = pagenumber
