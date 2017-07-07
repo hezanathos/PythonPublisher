@@ -9,7 +9,8 @@
                 <ul class="dropdown-menu">
                     {% for sousListes in liste %}
                         <li class="dropdown-submenu">
-                            <a tabindex="-1" class="test" href="#">{{sousListes[0]}} <span class="caret"></span></a>
+                                <img widht="20" height="20" src="/static/selectuser.png">
+                                <a tabindex="-1" class="test" href="#">{{sousListes[0]}} <span class="caret"></span></a>
                             <ul class="dropdown-menu">                                
                                 {% for titre in sousListes[1:] %}
                                     {% if titre %}
