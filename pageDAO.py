@@ -2,6 +2,7 @@
 from flask import Flask,request,flash
 from flaskext.mysql import MySQL
 import sys
+
 	
 mysql = MySQL()
 

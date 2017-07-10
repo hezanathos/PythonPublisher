@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from flask import Flask,request,flash
+from flask import Flask, request, flash, session
 from flaskext.mysql import MySQL
 import sys
 
@@ -37,3 +37,21 @@ def liste_auteurs():
 			liste_finale.append(listeTMP)
 	cursor.close()
 	return (liste_finale)
+
+def liste_Pages():
+	if 'pseudo' in session:
+		conn = mysql.connect()
+		cursor = conn.cursor()
+		user_mail=session.get('pseudo')
+		cursor.execute("SELECT `numero_page` FROM `pages_web` WHERE user_mail ='"+ user_mail + "'")
+		data = cursor.fetchall()
+
+		liste_finale = []
+		for row in data:
+			listeTMP = row[0]
+			liste_finale.append(listeTMP)
+
+		cursor.close()
+		return (liste_finale)
+	else:
+		return False

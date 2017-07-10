@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+    {% include 'header.html' %}
+    <body>
+    {% include 'menu.html' %}
+    <form action="" class="form-horizontal" method="post" enctype="multipart/form-data">
+    <fieldset>
+    <!-- Form Name -->
+    <legend>Formulaire de création de pages</legend>
+    <!-- Text input-->
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="titre">Titre : </label>  
+        <div class="col-md-4">
+            <input name="titre" type="text" placeholder="Entrez le titre de votre Page" class="form-control input-md" required>
+        </div>
+    </div>
+    <!-- Select Basic -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="taille">Taille : </label>
+      <div class="col-md-4">
+        <select name="taille_titre" class="form-control" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="chemin_image">Image : </label>
+      <div class="col-md-4">
+        <input class="btn btn-primary" type="file" name="chemin_image" id="chemin_image" class="form-control input-md" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-4 control-label" for="Votre article:">Quel est votre article :</label>
+        <br>
+        <textarea class="align-center" rows="15" cols="80" name="article" placeholder="Entrez votre article"  required></textarea>
+
+    </div>
+    <div class="col-md-6 control-label">
+        <input class="btn btn-success" type="submit" id="btsub" value="Envoyer">
+    </div>
+    </fieldset>
+    </form>
+    {{update}}
+    </body>
+		    {% include 'bottom.html' %}
+</html>
