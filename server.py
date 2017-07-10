@@ -13,6 +13,7 @@ import articleDAO
 import inscriptionDAO
 import uploadImageDAO
 import formDAO
+import prerempliFormDAO
 import pageDAO
 import compteDAO
 import pprint
@@ -98,6 +99,7 @@ def Formulaire():
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
+
 		DOSSIER_UPS=uploadImageDAO.createDirectory()
 		if f: # on vérifie qu'un fichier a bien été envoyé
 			if extension_ok(f.filename): # on vérifie que son extension est valide
