@@ -123,11 +123,10 @@ def Formulaire():
 		else:
 			return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
 
-@app.route('/modifpage/',methods=['GET','POST'])
-def ModifPage():
+@app.route('/modifpage/<pagenumber>',methods=['GET','POST'])
+def ModifPage(pagenumber):
 	user_mail=session.get('pseudo')
 	title= "Modifier Page"
-	session['page_number'] = pagenumber
 	if request.method == 'POST':
 		f = request.files['chemin_image']
 		params = {
@@ -149,7 +148,7 @@ def ModifPage():
 		if articleDAO.liste_Pages() == False:
 			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 		else:
-			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages(), pagenumber=pagenumber)
 
 @app.route('/pages', methods = ['GET', 'POST'])
 def Pages():
@@ -164,7 +163,6 @@ def Pages():
 def Creations(username,pagenumber):	
 	page = pageDAO.get(username,pagenumber)
 	user_mail = session.get('pseudo')
-	session['page_number'] = pagenumber
 	chemin_image ="/static/"+username+"/"+page["chemin_image"]
 	if articleDAO.liste_Pages() == False:
 		return render_template('page.html', page = page, titre = page["titre"], pseudo = user_mail, liste = articleDAO.liste_auteurs(), chemin_image = chemin_image, page_number = pagenumber)
