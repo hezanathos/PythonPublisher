@@ -14,7 +14,8 @@
                             <ul class="dropdown-menu">                                
                                 {% for titre in sousListes[1:] %}
                                     {% if titre %}
-                                        <li><a href="/pages/{{sousListes[0]}}/{{loop.index}}">{{titre}}</a></li>
+                                        <li><a href="/pages/{{sousListes[0]}}/{{loop.index}}">{{titre}}</a>
+                                        </li>
                                     {% endif %}
                                 {% endfor %}                                
                             </ul>

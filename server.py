@@ -164,7 +164,6 @@ def Pages():
 def Creations(username,pagenumber):	
 	page = pageDAO.get(username,pagenumber)
 	user_mail = session.get('pseudo')
-	session['page_number'] = pagenumber
 	chemin_image ="/static/"+username+"/"+page["chemin_image"]
 	if articleDAO.liste_Pages() == False:
 		return render_template('page.html', page = page, titre = page["titre"], pseudo = user_mail, liste = articleDAO.liste_auteurs(), chemin_image = chemin_image, page_number = pagenumber)
