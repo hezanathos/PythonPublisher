@@ -27,11 +27,11 @@
             <li><a class="active" href="/compte">Bienvenue : {{pseudo}}</a></li>
             <li><a href="{{url_for('Formulaire')}}">Créer Page</a></li>
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="{{url_for('ModifPage')}}">Modifier Page<span class="caret"></span></a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="{{url_for('ModifPage',pagenumber=pagenumber)}}">Modifier Page<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                 {% for Pages in listePages %}
                 <li>
-                    <a tabindex="-1" class="test" href="/modifpage/{{loop.index}}">{{Pages}}</a>
+                    <a tabindex="-1" class="test" href="/modifpage/{{Pages}}">{{Pages}}</a>
                 </li>
                 {% endfor %}
                 </ul>

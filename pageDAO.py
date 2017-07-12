@@ -15,7 +15,7 @@ mysql.init_app(app)
 def get(username,pagenumber):
 	"""Cette fonction va récuperer les titres, taille de titre, article et image et les afficher"""
 	cursor = mysql.connect().cursor()
-	cursor.execute("SELECT * from pages_web where user_mail='" + username + "' and numero_page='" + pagenumber + "'")
+	cursor.execute("SELECT * FROM pages_web WHERE user_mail='" + username + "' and numero_page='" + pagenumber + "'")
 	data = cursor.fetchall()
 	page = {}
 	page["article"]="Veuillez créer votre article"
