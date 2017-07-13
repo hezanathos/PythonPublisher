@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
-from flask import Flask,request,flash
+"""inscriptionDAO"""
+from flask import Flask
 from flaskext.mysql import MySQL
-import sys
 from pymysql.err import IntegrityError
-import smtplib
+
 
 mysql = MySQL()
 
@@ -15,19 +15,17 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 def inscription(params):
+	"""This function register a new user"""
 	conn = mysql.connect()
 	cursor = conn.cursor()
 	query = """INSERT INTO `inscription`(username,mdp,mail) VALUES(%(_pseudo)s,%(_mdp)s,%(_mail)s)"""
 	try:
-		cursor.execute(query,params)
+		cursor.execute(query, params)
 		conn.commit()
 
-	except IntegrityError as e:
+	except IntegrityError:
 		conn.rollback()
 		return False
-
-	#sender = 'yusfu95@hotmail.fr'
-	#receivers = ['']
 
 	cursor.close()
 	return True

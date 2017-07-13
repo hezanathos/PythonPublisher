@@ -1,22 +1,16 @@
 # -*- coding:utf-8 -*-
 
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, flash, session, render_template, redirect
 from flaskext.mysql import MySQL
-from flask import flash, make_response, session, redirect, url_for, send_file
-from flask import render_template
 from werkzeug import secure_filename
 
-import sys
-import os
 import connexionDAO
 import articleDAO
 import inscriptionDAO
 import uploadImageDAO
 import formDAO
-import prerempliFormDAO
 import pageDAO
 import compteDAO
-import pprint
 
 
 app = Flask('Dynamique')
@@ -29,17 +23,17 @@ app.config['MYSQL_DATABASE_DB'] = 'siteweb_python'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
-@app.route('/',methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def Accueil():
 	title = "Python Publisher"
 	user_mail = session.get('pseudo')
-	if user_mail == None:
-		return render_template('accueil.html', pseudo = "", title = title, liste = articleDAO.liste_auteurs())
-	return render_template('accueil.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+	if user_mail is None:
+		return render_template('accueil.html', pseudo="", title=title, liste=articleDAO.liste_auteurs())
+	return render_template('accueil.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs(), listePages=articleDAO.liste_pages())
 
-@app.route('/connexion', methods = ['GET', 'POST'])
+@app.route('/connexion', methods=['GET', 'POST'])
 def Connexion():
-	title="Connexion"
+	title = "Connexion"
 	user_mail = session.get('pseudo')
 	if request.method == 'POST':
 		mail = request.form['mail']
@@ -49,12 +43,12 @@ def Connexion():
 			return redirect('/')
 		else:
 			flash('Mauvais mot de passe')
-	if articleDAO.liste_Pages() == False:
-		return render_template('connexion.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+	if not articleDAO.liste_pages():
+		return render_template('connexion.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 	else:
-		return render_template('connexion.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+		return render_template('connexion.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs(), listePages=articleDAO.liste_pages())
 	
-@app.route('/inscription', methods = ['GET', 'POST'])
+@app.route('/inscription', methods=['GET', 'POST'])
 def Inscriptions():
 	user_mail = session.get('pseudo')
 	title = "Inscription"
@@ -75,36 +69,36 @@ def Inscriptions():
 			flash("Veuillez saisir un mot de passe identique")
 			return redirect('/inscription')
 	else:
-		if articleDAO.liste_Pages() == False:
-			return render_template('inscription.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+		if not articleDAO.liste_pages():
+			return render_template('inscription.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 		else:
-			return render_template('inscription.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+			return render_template('inscription.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs(), listePages=articleDAO.liste_pages())
 
 def extension_ok(nomfic):
 	""" Renvoie True si le fichier possède une extension d'image valide. """
 	return '.' in nomfic and nomfic.rsplit('.', 1)[1] in ('png', 'jpg', 'jpeg', 'gif', 'bmp')
 
 
-@app.route('/formulaire',methods=['GET','POST'])
+@app.route('/formulaire', methods=['GET', 'POST'])
 def Formulaire():
-	user_mail=session.get('pseudo')
-	title= "Créer Page"
+	user_mail = session.get('pseudo')
+	title = "Créer Page"
 	if request.method == 'POST':
-		f = request.files['chemin_image']
+		file = request.files['chemin_image']
 		params = {
 		'_numero_page' : request.form['numero_page'],
 		'_titre' : request.form['titre'],
 		'_taille_titre' : request.form['taille_titre'],
-		'_chemin_image' : secure_filename(f.filename),
+		'_chemin_image' : secure_filename(file.filename),
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
 
-		DOSSIER_UPS=uploadImageDAO.createDirectory()
-		if f: # on vérifie qu'un fichier a bien été envoyé
-			if extension_ok(f.filename): # on vérifie que son extension est valide
-				nom = secure_filename(f.filename)
-				f.save(DOSSIER_UPS + nom)
+		dossier = uploadImageDAO.createDirectory()
+		if file: # on vérifie qu'un fichier a bien été envoyé
+			if extension_ok(file.filename): # on vérifie que son extension est valide
+				nom = secure_filename(file.filename)
+				file.save(dossier + nom)
 
 				select_num_page = formDAO.isPageExist(params)
 				if select_num_page is not None:
@@ -116,65 +110,65 @@ def Formulaire():
 					flash('Formulaire complet')
 					return redirect('/')
 		else:
-			return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+			return render_template('formulaire.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 	else:
-		if articleDAO.liste_Pages() == False:
-			return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+		if not articleDAO.liste_pages():
+			return render_template('formulaire.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 		else:
-			return render_template('formulaire.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+			return render_template('formulaire.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs(), listePages=articleDAO.liste_pages())
 
-@app.route('/modifpage/<pagenumber>',methods=['GET','POST'])
+@app.route('/modifpage/<pagenumber>', methods=['GET', 'POST'])
 def ModifPage(pagenumber):
-	user_mail=session.get('pseudo')
-	title= "Modifier Page"
-	page = pageDAO.get(user_mail,pagenumber)
+	user_mail = session.get('pseudo')
+	title = "Modifier Page"
+	page = pageDAO.get(user_mail, pagenumber)
 
 	if request.method == 'POST':
-		f = request.files['chemin_image']
-		params = {
+		file = request.files['chemin_image']
+		params = { 
 		'_numero_page' : pagenumber,
 		'_titre' : request.form['titre'],
 		'_taille_titre' : request.form['taille_titre'],
-		'_chemin_image' : secure_filename(f.filename),
+		'_chemin_image' : secure_filename(file.filename),
 		'_article' : request.form['article'],
 		'_user_mail' : user_mail
 		}
-		DOSSIER_UPS=uploadImageDAO.createDirectory()
+		dossier = uploadImageDAO.createDirectory()
 		
-		if f: # on vérifie qu'un fichier a bien été envoyé
-			if extension_ok(f.filename): # on vérifie que son extension est valide
-				nom = secure_filename(f.filename)
-				f.save(DOSSIER_UPS + nom)
+		if file: # on vérifie qu'un fichier a bien été envoyé
+			if extension_ok(file.filename): # on vérifie que son extension est valide
+				nom = secure_filename(file.filename)
+				file.save(dossier + nom)
 				formDAO.update(params)
 				flash('Formulaire mis à jour')
 				return redirect('/')
 		else:
-			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+			return render_template('modifpage.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 	else:
-		if articleDAO.liste_Pages() == False:
-			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+		if not articleDAO.liste_pages():
+			return render_template('modifpage.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 		else:
-			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages(), pagenumber=pagenumber,  page = page, Titre_article = page["titre"])
+			return render_template('modifpage.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs(), listePages=articleDAO.liste_pages(), pagenumber=pagenumber, page=page, Titre_article=page["titre"])
 
 
-@app.route('/pages', methods = ['GET', 'POST'])
+@app.route('/pages', methods=['GET', 'POST'])
 def Pages():
 	title = "Nos Publishers"
 	user_mail = session.get('pseudo')
-	if articleDAO.liste_Pages() == False:
-		return render_template('mespages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+	if not articleDAO.liste_pages():
+		return render_template('mespages.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 	else:
-		return render_template('mespages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+		return render_template('mespages.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs(), listePages=articleDAO.liste_pages())
  
-@app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
-def Creations(username,pagenumber):	
-	page = pageDAO.get(username,pagenumber)
+@app.route('/pages/<username>/<pagenumber>', methods=['GET', 'POST'])
+def Creations(username, pagenumber):	
+	page = pageDAO.get(username, pagenumber)
 	user_mail = session.get('pseudo')
-	chemin_image ="/static/"+username+"/"+page["chemin_image"]
-	if articleDAO.liste_Pages() == False:
-		return render_template('page.html', page = page, titre = page["titre"], pseudo = user_mail, liste = articleDAO.liste_auteurs(), chemin_image = chemin_image, page_number = pagenumber)
+	chemin_image = "/static/"+username+"/"+page["chemin_image"]
+	if not articleDAO.liste_pages():
+		return render_template('page.html', titre=page["titre"], pseudo=user_mail, liste=articleDAO.liste_auteurs(), chemin_image=chemin_image,  page=page, page_number=pagenumber)
 	else:
-		return render_template('page.html', page = page, titre = page["titre"], pseudo = user_mail, liste = articleDAO.liste_auteurs(), chemin_image = chemin_image, page_number = pagenumber, listePages = articleDAO.liste_Pages())
+		return render_template('page.html', titre=page["titre"], pseudo=user_mail, liste=articleDAO.liste_auteurs(), chemin_image=chemin_image, page=page, page_number=pagenumber, listePages=articleDAO.liste_pages())
 
 @app.route('/deconnexion')
 def Logout():
@@ -182,7 +176,7 @@ def Logout():
 	flash('Deconnexion reussie')
 	return redirect('/')
 
-@app.route('/compte', methods = ['GET', 'POST'])
+@app.route('/compte', methods=['GET', 'POST'])
 def Compte():
 	title = "Mon Compte"
 	user_mail = session.get('pseudo')
@@ -203,9 +197,9 @@ def Compte():
 			flash("Veuillez saisir un mot de passe identique")
 			return redirect('/compte')
 	else:
-		if articleDAO.liste_Pages() == False:
-			return render_template('compte.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+		if not articleDAO.liste_pages():
+			return render_template('compte.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs())
 		else:
-			return render_template('compte.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+			return render_template('compte.html', pseudo=user_mail, title=title, liste=articleDAO.liste_auteurs(), listePages=articleDAO.liste_pages())
 
-app.run(debug = True)
+app.run(debug=True)

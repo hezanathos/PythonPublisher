@@ -1,8 +1,8 @@
 # -*- coding:utf-8 -*-
-from flask import Flask, request, flash
+"""comteDAO"""
+from flask import Flask
 from flaskext.mysql import MySQL
-import sys
-from pymysql.err import IntegrityError
+
 
 mysql = MySQL()
 
@@ -14,16 +14,13 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
 def update_compte(params):
+	"""This fuction updates the user password"""
 	conn = mysql.connect()
 	cursor = conn.cursor()
-
 	insertion = """UPDATE `inscription` SET mdp = %(_mdp)s WHERE mail = %(_mail)s"""
-	#try:
-	cursor.execute(insertion,params)
-	conn.commit()
-	#except IntegrityError as e:
-		#conn.rollback()
-		#return False
 
+	cursor.execute(insertion, params)
+	conn.commit()
 	cursor.close()
+
 	return True
