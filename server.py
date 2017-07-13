@@ -34,8 +34,8 @@ def Accueil():
 	title = "Python Publisher"
 	user_mail = session.get('pseudo')
 	if user_mail == None:
-		return render_template('Accueil.html', pseudo = "", title = title, liste = articleDAO.liste_auteurs())
-	return render_template('Accueil.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+		return render_template('accueil.html', pseudo = "", title = title, liste = articleDAO.liste_auteurs())
+	return render_template('accueil.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
 
 @app.route('/connexion', methods = ['GET', 'POST'])
 def Connexion():
@@ -127,10 +127,12 @@ def Formulaire():
 def ModifPage(pagenumber):
 	user_mail=session.get('pseudo')
 	title= "Modifier Page"
+	page = pageDAO.get(user_mail,pagenumber)
+
 	if request.method == 'POST':
 		f = request.files['chemin_image']
 		params = {
-		'_numero_page' : page_number,
+		'_numero_page' : pagenumber,
 		'_titre' : request.form['titre'],
 		'_taille_titre' : request.form['taille_titre'],
 		'_chemin_image' : secure_filename(f.filename),
@@ -138,26 +140,31 @@ def ModifPage(pagenumber):
 		'_user_mail' : user_mail
 		}
 		DOSSIER_UPS=uploadImageDAO.createDirectory()
+		
 		if f: # on vérifie qu'un fichier a bien été envoyé
 			if extension_ok(f.filename): # on vérifie que son extension est valide
 				nom = secure_filename(f.filename)
 				f.save(DOSSIER_UPS + nom)
+				formDAO.update(params)
+				flash('Formulaire mis à jour')
+				return redirect('/')
 		else:
 			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 	else:
 		if articleDAO.liste_Pages() == False:
 			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 		else:
-			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages(), pagenumber=pagenumber)
+			return render_template('modifpage.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages(), pagenumber=pagenumber,  page = page, Titre_article = page["titre"])
+
 
 @app.route('/pages', methods = ['GET', 'POST'])
 def Pages():
 	title = "Nos Publishers"
 	user_mail = session.get('pseudo')
 	if articleDAO.liste_Pages() == False:
-		return render_template('pages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
+		return render_template('mespages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs())
 	else:
-		return render_template('pages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
+		return render_template('mespages.html', pseudo = user_mail, title = title, liste = articleDAO.liste_auteurs(), listePages = articleDAO.liste_Pages())
  
 @app.route('/pages/<username>/<pagenumber>',methods=['GET','POST'])
 def Creations(username,pagenumber):	

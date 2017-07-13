@@ -6,19 +6,20 @@
     <form action="" class="form-horizontal" method="post" enctype="multipart/form-data">
     <fieldset>
     <!-- Form Name -->
-    <legend>Formulaire de création de pages</legend>
+    <legend>Formulaire de modification de pages</legend>
     <!-- Text input-->
     <div class="form-group">
         <label class="col-md-4 control-label" for="titre">Titre : </label>  
         <div class="col-md-4">
-            <input name="titre" type="text" placeholder="Entrez le titre de votre Page" class="form-control input-md" required>
+            <input name="titre" type="text" value="{{Titre_article}}" placeholder="Entrez le titre de votre Page" class="form-control input-md" required>
         </div>
     </div>
     <!-- Select Basic -->
     <div class="form-group">
       <label class="col-md-4 control-label" for="taille">Taille : </label>
       <div class="col-md-4">
-        <select name="taille_titre" class="form-control" required>
+        <select  name="taille_titre" class="form-control" required>
+          <option selected="selected">{{page["taille"]}}</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -33,14 +34,14 @@
     <div class="form-group">
       <label class="col-md-4 control-label" for="chemin_image">Image : </label>
       <div class="col-md-4">
-        <input class="btn btn-primary" type="file" name="chemin_image" id="chemin_image" class="form-control input-md" required>
+        <input class="btn btn-primary"  type="file" name="chemin_image" id="chemin_image" class="form-control input-md" required>
       </div>
     </div>
 
     <div class="form-group">
         <label class="col-md-4 control-label" for="Votre article:">Quel est votre article :</label>
         <br>
-        <textarea class="align-center" rows="15" cols="80" name="article" placeholder="Entrez votre article"  required></textarea>
+        <textarea class="align-center" rows="15" cols="80"  name="article" placeholder="Entrez votre article"  required>{{page["article"]}}</textarea>
 
     </div>
     <div class="col-md-6 control-label">
@@ -49,6 +50,5 @@
     </fieldset>
     </form>
     </body>
-     {{pagenumber}}
 		    {% include 'bottom.html' %}
 </html>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Mer 28 Juin 2017 à 10:31
+-- Généré le :  Ven 07 Juillet 2017 à 13:07
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -39,8 +39,9 @@ CREATE TABLE `inscription` (
 INSERT INTO `inscription` (`username`, `mdp`, `mail`) VALUES
 ('zaere', 'zrf', 'a@b.c'),
 ('Alex', 'alex', 'alex.lecoq@orange.com'),
+('Max', 'DODO', 'jean.laposte@orange.com'),
 ('Lamyae', 'lamyae', 'lamyae.laaroussi@orange.com'),
-('Maxime', 'mdp', 'maxime.rasse@orange.com'),
+('Maxime', '1234', 'maxime.rasse@orange.com'),
 ('Yusuf', 'yusuf', 'yusuf.makanjuola@orange.com');
 
 -- --------------------------------------------------------
@@ -64,11 +65,13 @@ CREATE TABLE `pages_web` (
 --
 
 INSERT INTO `pages_web` (`article`, `titre`, `chemin_image`, `taille_titre`, `numero_page`, `user_mail`, `id`) VALUES
-('eses', 'Bonjour', 'image1', '4', '1', 'maxime.rasse@orange.com', 1),
-('eses', 'Bonjour', 'image1', '4', '1', 'maxime.rasse@orange.com', 53),
-('ok', 'Titre Page 1 test', 'image1.jpg', '3', '2', 'maxime.rasse@orange.com', 54),
-('mON PREMIER ARTICLE', 'MonTitre', 'image.jpg', '1', '1', 'yusuf.makanjuola@orange.com', 55),
-('iuiuiuiuiuiuu', 'Bonjour', 'image1', '2', '3', 'maxime.rasse@orange.com', 56);
+('ok', 'Bonjour', '19478388_10209578052830497_940280311_o.jpg', '1', '1', 'maxime.rasse@orange.com', 1),
+('rzevzervzerzrzrzrvz', 'Bonjour', 'A_crane_lifts_a_metal_shipping_container_RGB_White.png', '3', '2', 'maxime.rasse@orange.com', 61),
+('Le bg du 14', 'Yusuf ', 'gettyimages-82149805_super.jpg', '4', '3', 'maxime.rasse@orange.com', 62),
+('Je cherche qqc au microscope', 'Bonjour', 'stocksy_txpb0c57a47do5100_original_564527.jpg', '1', '1', 'alex.lecoq@orange.com', 63),
+('Depuis peu je suis devenu papa, m\'occuper de mon fils est devenu ma passion numéro 1. Je lui transmet mon savoir de la CoopNet, pour qu\'il puisse à son tour devenir un expert de la CoopNet.\r\n\r\nJe suis fier de lui, il est devenu fort dans ce monde dangereux.\r\n', 'Mon fiston', 'u160308_en.jpg', '1', '1', 'yusuf.makanjuola@orange.com', 64),
+('Mon sport favori est l\'escalade, j\'escalade souvent de grand bâtiments, j\'aime prendre du risque dans la vie, j\'aime la vie, j\'aime la nature, j\'aime les fleurs, j\'aime le CO2, j\'aime les gaz à effet de serre, j\'aime monter le long des échelles...', 'Mon sport favori', 'orange_1146189_16092016.jpg', '1', '2', 'yusuf.makanjuola@orange.com', 65),
+('Moi c\'est Yusuf MAKANJUOLA, sur cette photo j\'avais dix ans,  je suis né d\'une famille italienne, avec une mère Coréenne, et un père italien. \r\nJ\'ai eu un accident étant petit, ma tête ne va plus très bien mais j\'arrive à être moi même, ce qui est le principal dans la vie.\r\n\r\nJe suis un grand fan de RASSE Maxime, je trouve que c\'est vraiment le meilleur dans son domaine, il me transmet son savoir et m\'inculque les bonnes manières. \r\n\r\nC\'est le meilleur, je suis vraiment heureux de pouvoir lui servir son café tous les matins.\r\n', 'Moi', 'gettyimages-82149805_super.jpg', '1', '3', 'yusuf.makanjuola@orange.com', 66);
 
 --
 -- Index pour les tables exportées
@@ -97,7 +100,7 @@ ALTER TABLE `pages_web`
 -- AUTO_INCREMENT pour la table `pages_web`
 --
 ALTER TABLE `pages_web`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 --
 -- Contraintes pour les tables exportées
 --
